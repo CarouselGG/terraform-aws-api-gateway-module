@@ -40,7 +40,6 @@ variable "hosted_zone_id" {
   type        = string
 }
 
-
 variable "api_mapping_key" {
   description = "Mapping key for the API Gateway custom domain"
   type        = string
@@ -48,10 +47,22 @@ variable "api_mapping_key" {
 }
 
 // Cloudwatch Dashboard variables
+variable "log_group_namespace" {
+  description = "Namespace of the CloudWatch Log Group for API Gateway that prepends the log_group_name"
+  type        = string
+  default     = "/aws/http-api/"
+}
+
 variable "log_group_name" {
   description = "Name of the CloudWatch Log Group for API Gateway"
   type        = string
 }
+
+variable "api_name" {
+  description = "Name of the API Gateway"
+  type        = string
+}
+
 variable "enable_dashboards" {
   description = "Flag to enable or disable the creation of CloudWatch Dashboards"
   type        = bool

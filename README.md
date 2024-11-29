@@ -32,7 +32,8 @@ module "api_gateway" {
   aws_region              = "us-west-2"
   custom_domain_name      = "api.example.com"
   hosted_zone_id          = "Z123456789EXAMPLE"
-  log_group_name          = "/aws/http-api/example-api"
+  log_group_namespace     = "/aws/http-api/" // Defaults to "/aws/http-api/"
+  log_group_name          = "example-api" // Don't include namespace
   log_retention_in_days   = 14
   log_role_name           = "example-api-logging-role"
 
@@ -48,22 +49,23 @@ module "api_gateway" {
 
 ## Inputs
 
-| Name                       | Description                                      | Type   | Default | Required |
-|----------------------------|--------------------------------------------------|--------|---------|----------|
-| access_log_destination_arn | CloudWatch Log Group ARN for access logs         | string | n/a     | yes      |
-| api_description            | Description of the API Gateway                   | string | null    | no       |
-| api_mapping_key            | Mapping key for the API Gateway custom domain    | string | ""      | no       |
-| api_name                   | Name of the API Gateway                          | string | n/a     | yes      |
-| api_stage_description      | Description of the API Gateway stage             | string | null    | no       |
-| aws_region                 | Region for Cloudwatch Dashboard                  | string | n/a     | yes      |
-| api_stage_name             | Name of the API Gateway stage                    | string | n/a     | yes      |
-| custom_domain_name         | Custom domain name for the API Gateway           | string | n/a     | yes      |
-| enable_dashboards          | Enable CloudWatch dashboards for API Gateway     | bool   | false   | no       |
-| hosted_zone_id             | Hosted zone ID for the custom domain             | string | n/a     | yes      |
-| log_group_name             | Name of the CloudWatch Log Group for API Gateway | string | n/a     | yes      |
-| log_retention_in_days      | Retention period for the CloudWatch log group    | number | 14      | no       |
-| log_role_name              | Name of the IAM role for CloudWatch logging      | string | n/a     | yes      |
-| routes                     | Map of route keys to Lambda integration ARNs     | map    | n/a     | yes      |
+| Name                       | Description                                      | Type   | Default          | Required |
+|----------------------------|--------------------------------------------------|--------|------------------|----------|
+| access_log_destination_arn | CloudWatch Log Group ARN for access logs         | string | n/a              | yes      |
+| api_description            | Description of the API Gateway                   | string | null             | no       |
+| api_mapping_key            | Mapping key for the API Gateway custom domain    | string | ""               | no       |
+| api_name                   | Name of the API Gateway                          | string | n/a              | yes      |
+| api_stage_description      | Description of the API Gateway stage             | string | null             | no       |
+| aws_region                 | Region for Cloudwatch Dashboard                  | string | n/a              | yes      |
+| api_stage_name             | Name of the API Gateway stage                    | string | n/a              | yes      |
+| custom_domain_name         | Custom domain name for the API Gateway           | string | n/a              | yes      |
+| enable_dashboards          | Enable CloudWatch dashboards for API Gateway     | bool   | false            | no       |
+| hosted_zone_id             | Hosted zone ID for the custom domain             | string | n/a              | yes      |
+| log_group_namespace        | Name of the CloudWatch Log Group for API Gateway | string | "/aws/http-awi/" | yes      |
+| log_group_name             | Name of the CloudWatch Log Group for API Gateway | string | n/a              | yes      |
+| log_retention_in_days      | Retention period for the CloudWatch log group    | number | 14               | no       |
+| log_role_name              | Name of the IAM role for CloudWatch logging      | string | n/a              | yes      |
+| routes                     | Map of route keys to Lambda integration ARNs     | map    | n/a              | yes      |
 
 
 ## Outputs

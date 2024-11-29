@@ -1,6 +1,6 @@
 # CloudWatch Log Group for API Gateway logging
 resource "aws_cloudwatch_log_group" "api_gateway_log_group" {
-  name              = var.log_group_name
+  name              = local.log_group_name_with_namespace
   retention_in_days = var.log_retention_in_days
 }
 
