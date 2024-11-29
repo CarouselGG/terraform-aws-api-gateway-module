@@ -52,10 +52,15 @@ variable "api_mapping_key" {
   default     = ""
 }
 
-// Log variables
+// Cloudwatch Dashboard variables
 variable "log_group_name" {
   description = "Name of the CloudWatch Log Group for API Gateway"
   type        = string
+}
+variable "enable_dashboards" {
+  description = "Flag to enable or disable the creation of CloudWatch Dashboards"
+  type        = bool
+  default     = false
 }
 
 variable "log_retention_in_days" {
@@ -68,3 +73,6 @@ variable "log_role_name" {
   description = "Name of the IAM Role for API Gateway CloudWatch logging"
   type        = string
 }
+
+
+
