@@ -59,11 +59,6 @@ variable "log_group_name" {
   default     = ""
 }
 
-variable "api_name" {
-  description = "Name of the API Gateway"
-  type        = string
-}
-
 variable "enable_dashboards" {
   description = "Flag to enable or disable the creation of CloudWatch Dashboards"
   type        = bool
