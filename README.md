@@ -51,7 +51,6 @@ module "api_gateway" {
 | log_role_name           | Name of the IAM role for CloudWatch logging    | string | n/a     | yes      |
 | routes                  | Map of route keys to Lambda integration ARNs   | map    | n/a     | yes      |
 
-
 ## Outputs
 
 | Name                | Description                              |
@@ -60,3 +59,7 @@ module "api_gateway" {
 | custom_domain_name  | Custom domain name for the API Gateway   |
 | log_group_arn       | ARN of the CloudWatch Log Group          |
 | log_role_arn        | ARN of the IAM Role for CloudWatch       |
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
