@@ -13,6 +13,12 @@ Author - [Loren M. Kerr](https://github.com/lmkerr 'Github Page for Loren M. Ker
 - Integrates with CloudWatch for logging.
 - Configures API Gateway routes and Lambda integrations.
 
+## Why use it?
+
+- Easy to setup!
+- API Gateway v2 can reduce API Gateway cost by nearly 70%!
+- Why do it all yourself? It's free!
+
 ## Usage
 
 ```hcl
@@ -35,6 +41,9 @@ module "api_gateway" {
   }
 }
 ```
+
+> [!NOTE]
+> Make sure you have a valid hostname and a domain / subdomain name that has been verified!
 
 ## Inputs
 
