@@ -30,6 +30,8 @@ resource "aws_route53_record" "cert_validation" {
   type    = each.value.resource_record_type
   records = [each.value.resource_record_value]
   ttl     = 60
+
+  depends_on = [aws_acm_certificate.custom_domain_cert]
 }
 
 # Validate the ACM Certificate
