@@ -29,6 +29,7 @@ module "api_gateway" {
   api_description         = "Example API Gateway"
   api_stage_name          = "v1"
   api_stage_description   = "Production stage for Example API"
+  aws_region              = "us-west-2"
   custom_domain_name      = "api.example.com"
   hosted_zone_id          = "Z123456789EXAMPLE"
   log_group_name          = "/aws/http-api/example-api"
