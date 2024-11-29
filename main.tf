@@ -12,6 +12,11 @@ resource "aws_apigatewayv2_stage" "api_stage" {
   description = var.api_stage_description
   auto_deploy = true
 
+  # Enable detailed metrics
+  default_route_settings {
+    detailed_metrics_enabled = true
+  }
+
   # Access logs configuration
   access_log_settings {
     destination_arn = var.access_log_destination_arn
@@ -22,13 +27,12 @@ resource "aws_apigatewayv2_stage" "api_stage" {
       requestTime    = "$context.requestTime",
       httpMethod     = "$context.httpMethod",
       routeKey       = "$context.routeKey",
-      status         = "$context.status",
+      statusCode     = "$context.status",
       protocol       = "$context.protocol",
       responseLength = "$context.responseLength"
     })
   }
 }
-
 
 # Integrations
 resource "aws_apigatewayv2_integration" "integrations" {

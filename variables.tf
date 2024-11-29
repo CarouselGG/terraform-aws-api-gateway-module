@@ -46,13 +46,6 @@ variable "api_mapping_key" {
   default     = ""
 }
 
-// Cloudwatch Dashboard variables
-variable "log_group_namespace" {
-  description = "Namespace of the CloudWatch Log Group for API Gateway that prepends the log_group_name"
-  type        = string
-  default     = "/aws/http-api/"
-}
-
 variable "log_group_name" {
   description = "Name of the CloudWatch Log Group for API Gateway"
   type        = string
