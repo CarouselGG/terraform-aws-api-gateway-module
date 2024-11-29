@@ -18,10 +18,10 @@ resource "aws_cloudwatch_dashboard" "api_gateway_dashboard" {
           title  = "Overall Traffic and Status Codes"
           region = var.aws_region
           metrics = [
-            ["AWS/ApiGateway", "Count", "ApiName", var.api_name, "Stage", var.api_stage_name, { "stat" : "Sum", "color" : "#800080" }],    # Total Calls (Purple)
-            ["AWS/ApiGateway", "4xxError", "ApiName", var.api_name, "Stage", var.api_stage_name, { "stat" : "Sum", "color" : "#FFD700" }], # 400 Errors (Yellow)
-            ["AWS/ApiGateway", "5xxError", "ApiName", var.api_name, "Stage", var.api_stage_name, { "stat" : "Sum", "color" : "#FF0000" }], # 500 Errors (Red)
-            ["AWS/ApiGateway", "2xx", "ApiName", var.api_name, "Stage", var.api_stage_name, { "stat" : "Sum", "color" : "#008000" }]       # Successful 200 Responses (Green)
+            ["aws/http-api", "Count", "ApiName", var.api_name, "Stage", var.api_stage_name, { "stat" : "Sum", "color" : "#800080" }],    # Total Calls (Purple)
+            ["aws/http-api", "4xxError", "ApiName", var.api_name, "Stage", var.api_stage_name, { "stat" : "Sum", "color" : "#FFD700" }], # 400 Errors (Yellow)
+            ["aws/http-api", "5xxError", "ApiName", var.api_name, "Stage", var.api_stage_name, { "stat" : "Sum", "color" : "#FF0000" }], # 500 Errors (Red)
+            ["aws/http-api", "2xx", "ApiName", var.api_name, "Stage", var.api_stage_name, { "stat" : "Sum", "color" : "#008000" }]       # Successful 200 Responses (Green)
           ]
           period = 300
           stat   = "Sum"
@@ -40,7 +40,7 @@ resource "aws_cloudwatch_dashboard" "api_gateway_dashboard" {
           title  = "4xx Errors"
           region = var.aws_region
           metrics = [
-            ["AWS/ApiGateway", "4xxError", "ApiName", var.api_name, "Stage", var.api_stage_name, { "stat" : "Sum" }]
+            ["aws/http-api", "4xxError", "ApiName", var.api_name, "Stage", var.api_stage_name, { "stat" : "Sum" }]
           ]
           period = 300
           stat   = "Sum"
@@ -68,7 +68,7 @@ resource "aws_cloudwatch_dashboard" "api_gateway_dashboard" {
           title  = "5xx Errors"
           region = var.aws_region
           metrics = [
-            ["AWS/ApiGateway", "5xxError", "ApiName", var.api_name, "Stage", var.api_stage_name, { "stat" : "Sum" }]
+            ["aws/http-api", "5xxError", "ApiName", var.api_name, "Stage", var.api_stage_name, { "stat" : "Sum" }]
           ]
           period = 300
           stat   = "Sum"
@@ -96,7 +96,7 @@ resource "aws_cloudwatch_dashboard" "api_gateway_dashboard" {
           title  = "Integration Latency"
           region = var.aws_region
           metrics = [
-            ["AWS/ApiGateway", "IntegrationLatency", "ApiName", var.api_name, "Stage", var.api_stage_name, { "stat" : "Average" }]
+            ["aws/http-api", "IntegrationLatency", "ApiName", var.api_name, "Stage", var.api_stage_name, { "stat" : "Average" }]
           ]
           period = 300
           stat   = "Average"
@@ -115,7 +115,7 @@ resource "aws_cloudwatch_dashboard" "api_gateway_dashboard" {
           title  = "Overall Latency"
           region = var.aws_region
           metrics = [
-            ["AWS/ApiGateway", "Latency", "ApiName", var.api_name, "Stage", var.api_stage_name, { "stat" : "Average" }]
+            ["aws/http-api", "Latency", "ApiName", var.api_name, "Stage", var.api_stage_name, { "stat" : "Average" }]
           ]
           period = 300
           stat   = "Average"
@@ -134,9 +134,9 @@ resource "aws_cloudwatch_dashboard" "api_gateway_dashboard" {
           title  = "Latency Percentiles (P50, P90, P99)"
           region = var.aws_region
           metrics = [
-            ["AWS/ApiGateway", "Latency", "ApiName", var.api_name, "Stage", var.api_stage_name, { "stat" : "p50" }],
-            ["AWS/ApiGateway", "Latency", "ApiName", var.api_name, "Stage", var.api_stage_name, { "stat" : "p90" }],
-            ["AWS/ApiGateway", "Latency", "ApiName", var.api_name, "Stage", var.api_stage_name, { "stat" : "p99" }]
+            ["aws/http-api", "Latency", "ApiName", var.api_name, "Stage", var.api_stage_name, { "stat" : "p50" }],
+            ["aws/http-api", "Latency", "ApiName", var.api_name, "Stage", var.api_stage_name, { "stat" : "p90" }],
+            ["aws/http-api", "Latency", "ApiName", var.api_name, "Stage", var.api_stage_name, { "stat" : "p99" }]
           ]
           period = 300
         }
@@ -154,8 +154,8 @@ resource "aws_cloudwatch_dashboard" "api_gateway_dashboard" {
           title  = "Latency Comparison (Overall vs. Integration)"
           region = var.aws_region
           metrics = [
-            ["AWS/ApiGateway", "Latency", "ApiName", var.api_name, "Stage", var.api_stage_name, { "stat" : "Average" }],
-            ["AWS/ApiGateway", "IntegrationLatency", "ApiName", var.api_name, "Stage", var.api_stage_name, { "stat" : "Average" }]
+            ["aws/http-api", "Latency", "ApiName", var.api_name, "Stage", var.api_stage_name, { "stat" : "Average" }],
+            ["aws/http-api", "IntegrationLatency", "ApiName", var.api_name, "Stage", var.api_stage_name, { "stat" : "Average" }]
           ]
           period = 300
         }
