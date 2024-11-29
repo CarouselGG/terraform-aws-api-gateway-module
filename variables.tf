@@ -49,7 +49,7 @@ variable "api_mapping_key" {
 variable "log_group_name" {
   description = "Name of the CloudWatch Log Group for API Gateway"
   type        = string
-  default     = ""
+  default     = null
 }
 
 variable "enable_dashboards" {
