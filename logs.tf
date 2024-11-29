@@ -31,12 +31,13 @@ resource "aws_iam_role_policy" "api_gateway_cloudwatch_policy" {
     Version = "2012-10-17",
     Statement = [
       {
+        Effect = "Allow",
         Action = [
           "logs:CreateLogGroup",
           "logs:CreateLogStream",
-          "logs:PutLogEvents"
+          "logs:PutLogEvents",
+          "cloudwatch:PutMetricData"
         ],
-        Effect   = "Allow",
         Resource = "*"
       }
     ]

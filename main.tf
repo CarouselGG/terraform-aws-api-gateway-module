@@ -12,11 +12,23 @@ resource "aws_apigatewayv2_stage" "api_stage" {
   description = var.api_stage_description
   auto_deploy = true
 
+  # Access logs configuration
   access_log_settings {
     destination_arn = var.access_log_destination_arn
-    format          = var.access_log_format
+    format = jsonencode({
+      requestId      = "$context.requestId",
+      ip             = "$context.identity.sourceIp",
+      user           = "$context.identity.caller",
+      requestTime    = "$context.requestTime",
+      httpMethod     = "$context.httpMethod",
+      routeKey       = "$context.routeKey",
+      status         = "$context.status",
+      protocol       = "$context.protocol",
+      responseLength = "$context.responseLength"
+    })
   }
 }
+
 
 # Integrations
 resource "aws_apigatewayv2_integration" "integrations" {

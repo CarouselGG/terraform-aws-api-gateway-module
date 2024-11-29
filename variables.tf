@@ -25,11 +25,6 @@ variable "access_log_destination_arn" {
   type        = string
 }
 
-variable "access_log_format" {
-  description = "Access log format for API Gateway"
-  type        = string
-}
-
 variable "routes" {
   description = "Map of route keys to Lambda integration ARNs"
   type        = map(string)
