@@ -56,6 +56,7 @@ variable "log_group_namespace" {
 variable "log_group_name" {
   description = "Name of the CloudWatch Log Group for API Gateway"
   type        = string
+  default     = ""
 }
 
 variable "api_name" {

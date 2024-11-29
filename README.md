@@ -62,7 +62,7 @@ module "api_gateway" {
 | enable_dashboards          | Enable CloudWatch dashboards for API Gateway     | bool   | false            | no       |
 | hosted_zone_id             | Hosted zone ID for the custom domain             | string | n/a              | yes      |
 | log_group_namespace        | Name of the CloudWatch Log Group for API Gateway | string | "/aws/http-awi/" | yes      |
-| log_group_name             | Name of the CloudWatch Log Group for API Gateway | string | n/a              | yes      |
+| log_group_name             | Name of the CloudWatch Log Group for API Gateway | string | var.api_name     | no       |
 | log_retention_in_days      | Retention period for the CloudWatch log group    | number | 14               | no       |
 | log_role_name              | Name of the IAM role for CloudWatch logging      | string | n/a              | yes      |
 | routes                     | Map of route keys to Lambda integration ARNs     | map    | n/a              | yes      |
