@@ -34,3 +34,29 @@ module "api_gateway" {
     "POST /example" = aws_lambda_function.example_post_lambda.invoke_arn
   }
 }
+```
+
+## Inputs
+
+| Name                    | Description                                    | Type   | Default | Required |
+|-------------------------|------------------------------------------------|--------|---------|----------|
+| api_name                | Name of the API Gateway                        | string | n/a     | yes      |
+| api_description         | Description of the API Gateway                 | string | null    | no       |
+| api_stage_name          | Name of the API Gateway stage                  | string | n/a     | yes      |
+| api_stage_description   | Description of the API Gateway stage           | string | null    | no       |
+| custom_domain_name      | Custom domain name for the API Gateway         | string | n/a     | yes      |
+| hosted_zone_id          | Hosted zone ID for the custom domain           | string | n/a     | yes      |
+| log_group_name          | Name of the CloudWatch log group               | string | n/a     | yes      |
+| log_retention_in_days   | Retention period for the CloudWatch log group  | number | 14      | no       |
+| log_role_name           | Name of the IAM role for CloudWatch logging    | string | n/a     | yes      |
+| routes                  | Map of route keys to Lambda integration ARNs   | map    | n/a     | yes      |
+
+
+## Outputs
+
+| Name                | Description                              |
+|---------------------|------------------------------------------|
+| execution_arn       | Execution ARN of the API Gateway         |
+| custom_domain_name  | Custom domain name for the API Gateway   |
+| log_group_arn       | ARN of the CloudWatch Log Group          |
+| log_role_arn        | ARN of the IAM Role for CloudWatch       |
