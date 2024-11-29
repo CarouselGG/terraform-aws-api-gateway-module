@@ -1,7 +1,7 @@
 resource "aws_cloudwatch_dashboard" "api_gateway_dashboard" {
   count = var.enable_dashboards ? 1 : 0
 
-  dashboard_name = "${var.api_name}-dashboard"
+  dashboard_name = "${local.metric_name}-dashboard"
 
   dashboard_body = jsonencode({
     widgets = [
@@ -18,10 +18,10 @@ resource "aws_cloudwatch_dashboard" "api_gateway_dashboard" {
           title  = "Overall Traffic and Status Codes"
           region = var.aws_region
           metrics = [
-            [log_group_name_with_namespace, "Count", "ApiName", var.api_name, "Stage", var.api_stage_name, { "stat" : "Sum", "color" : "#800080" }],    # Total Calls (Purple)
-            [log_group_name_with_namespace, "4xxError", "ApiName", var.api_name, "Stage", var.api_stage_name, { "stat" : "Sum", "color" : "#FFD700" }], # 400 Errors (Yellow)
-            [log_group_name_with_namespace, "5xxError", "ApiName", var.api_name, "Stage", var.api_stage_name, { "stat" : "Sum", "color" : "#FF0000" }], # 500 Errors (Red)
-            [log_group_name_with_namespace, "2xx", "ApiName", var.api_name, "Stage", var.api_stage_name, { "stat" : "Sum", "color" : "#008000" }]       # Successful 200 Responses (Green)
+            [local.metric_namespace, "Count", "ApiName", local.metric_name, "Stage", var.api_stage_name, { "stat" : "Sum", "color" : "#800080" }],    # Total Calls (Purple)
+            [local.metric_namespace, "4xxError", "ApiName", local.metric_name, "Stage", var.api_stage_name, { "stat" : "Sum", "color" : "#FFD700" }], # 400 Errors (Yellow)
+            [local.metric_namespace, "5xxError", "ApiName", local.metric_name, "Stage", var.api_stage_name, { "stat" : "Sum", "color" : "#FF0000" }], # 500 Errors (Red)
+            [local.metric_namespace, "2xx", "ApiName", local.metric_name, "Stage", var.api_stage_name, { "stat" : "Sum", "color" : "#008000" }]       # Successful 200 Responses (Green)
           ]
           period = 300
           stat   = "Sum"
@@ -40,7 +40,7 @@ resource "aws_cloudwatch_dashboard" "api_gateway_dashboard" {
           title  = "4xx Errors"
           region = var.aws_region
           metrics = [
-            [log_group_name_with_namespace, "4xxError", "ApiName", var.api_name, "Stage", var.api_stage_name, { "stat" : "Sum" }]
+            [local.metric_namespace, "4xxError", "ApiName", local.metric_name, "Stage", var.api_stage_name, { "stat" : "Sum" }]
           ]
           period = 300
           stat   = "Sum"
@@ -68,7 +68,7 @@ resource "aws_cloudwatch_dashboard" "api_gateway_dashboard" {
           title  = "5xx Errors"
           region = var.aws_region
           metrics = [
-            [log_group_name_with_namespace, "5xxError", "ApiName", var.api_name, "Stage", var.api_stage_name, { "stat" : "Sum" }]
+            [local.metric_namespace, "5xxError", "ApiName", local.metric_name, "Stage", var.api_stage_name, { "stat" : "Sum" }]
           ]
           period = 300
           stat   = "Sum"
@@ -96,7 +96,7 @@ resource "aws_cloudwatch_dashboard" "api_gateway_dashboard" {
           title  = "Integration Latency"
           region = var.aws_region
           metrics = [
-            [log_group_name_with_namespace, "IntegrationLatency", "ApiName", var.api_name, "Stage", var.api_stage_name, { "stat" : "Average" }]
+            [local.metric_namespace, "IntegrationLatency", "ApiName", local.metric_name, "Stage", var.api_stage_name, { "stat" : "Average" }]
           ]
           period = 300
           stat   = "Average"
@@ -115,7 +115,7 @@ resource "aws_cloudwatch_dashboard" "api_gateway_dashboard" {
           title  = "Overall Latency"
           region = var.aws_region
           metrics = [
-            [log_group_name_with_namespace, "Latency", "ApiName", var.api_name, "Stage", var.api_stage_name, { "stat" : "Average" }]
+            [local.metric_namespace, "Latency", "ApiName", local.metric_name, "Stage", var.api_stage_name, { "stat" : "Average" }]
           ]
           period = 300
           stat   = "Average"
@@ -134,9 +134,9 @@ resource "aws_cloudwatch_dashboard" "api_gateway_dashboard" {
           title  = "Latency Percentiles (P50, P90, P99)"
           region = var.aws_region
           metrics = [
-            [log_group_name_with_namespace, "Latency", "ApiName", var.api_name, "Stage", var.api_stage_name, { "stat" : "p50" }],
-            [log_group_name_with_namespace, "Latency", "ApiName", var.api_name, "Stage", var.api_stage_name, { "stat" : "p90" }],
-            [log_group_name_with_namespace, "Latency", "ApiName", var.api_name, "Stage", var.api_stage_name, { "stat" : "p99" }]
+            [local.metric_namespace, "Latency", "ApiName", local.metric_name, "Stage", var.api_stage_name, { "stat" : "p50" }],
+            [local.metric_namespace, "Latency", "ApiName", local.metric_name, "Stage", var.api_stage_name, { "stat" : "p90" }],
+            [local.metric_namespace, "Latency", "ApiName", local.metric_name, "Stage", var.api_stage_name, { "stat" : "p99" }]
           ]
           period = 300
         }
@@ -154,8 +154,8 @@ resource "aws_cloudwatch_dashboard" "api_gateway_dashboard" {
           title  = "Latency Comparison (Overall vs. Integration)"
           region = var.aws_region
           metrics = [
-            [log_group_name_with_namespace, "Latency", "ApiName", var.api_name, "Stage", var.api_stage_name, { "stat" : "Average" }],
-            [log_group_name_with_namespace, "IntegrationLatency", "ApiName", var.api_name, "Stage", var.api_stage_name, { "stat" : "Average" }]
+            [local.metric_namespace, "Latency", "ApiName", local.metric_name, "Stage", var.api_stage_name, { "stat" : "Average" }],
+            [local.metric_namespace, "IntegrationLatency", "ApiName", local.metric_name, "Stage", var.api_stage_name, { "stat" : "Average" }]
           ]
           period = 300
         }
