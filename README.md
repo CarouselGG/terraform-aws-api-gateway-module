@@ -55,6 +55,7 @@ module "api_gateway" {
 | api_mapping_key            | Mapping key for the API Gateway custom domain    | string | ""      | no       |
 | api_name                   | Name of the API Gateway                          | string | n/a     | yes      |
 | api_stage_description      | Description of the API Gateway stage             | string | null    | no       |
+| aws_region                 | Region for Cloudwatch Dashboard                  | string | n/a     | yes      |
 | api_stage_name             | Name of the API Gateway stage                    | string | n/a     | yes      |
 | custom_domain_name         | Custom domain name for the API Gateway           | string | n/a     | yes      |
 | enable_dashboards          | Enable CloudWatch dashboards for API Gateway     | bool   | false   | no       |

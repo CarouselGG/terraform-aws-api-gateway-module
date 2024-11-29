@@ -13,8 +13,9 @@ resource "aws_cloudwatch_dashboard" "api_gateway_dashboard" {
         width  = 12
         height = 6
         properties = {
-          view  = "timeSeries"
-          title = "4xx Errors"
+          view   = "timeSeries"
+          title  = "4xx Errors"
+          region = var.aws_region
           metrics = [
             ["AWS/ApiGateway", "4xxError", "ApiName", var.api_name, { "stat" : "Sum" }]
           ]
@@ -40,8 +41,9 @@ resource "aws_cloudwatch_dashboard" "api_gateway_dashboard" {
         width  = 12
         height = 6
         properties = {
-          view  = "timeSeries"
-          title = "5xx Errors"
+          view   = "timeSeries"
+          title  = "5xx Errors"
+          region = var.aws_region
           metrics = [
             ["AWS/ApiGateway", "5xxError", "ApiName", var.api_name, { "stat" : "Sum" }]
           ]
@@ -67,8 +69,9 @@ resource "aws_cloudwatch_dashboard" "api_gateway_dashboard" {
         width  = 12
         height = 6
         properties = {
-          view  = "timeSeries"
-          title = "Integration Latency"
+          view   = "timeSeries"
+          title  = "Integration Latency"
+          region = var.aws_region
           metrics = [
             ["AWS/ApiGateway", "IntegrationLatency", "ApiName", var.api_name, { "stat" : "Average" }]
           ]
@@ -85,8 +88,9 @@ resource "aws_cloudwatch_dashboard" "api_gateway_dashboard" {
         width  = 12
         height = 6
         properties = {
-          view  = "timeSeries"
-          title = "Overall Latency"
+          view   = "timeSeries"
+          title  = "Overall Latency"
+          region = var.aws_region
           metrics = [
             ["AWS/ApiGateway", "Latency", "ApiName", var.api_name, { "stat" : "Average" }]
           ]

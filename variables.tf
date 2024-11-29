@@ -63,6 +63,11 @@ variable "enable_dashboards" {
   default     = false
 }
 
+variable "aws_region" {
+  description = "AWS region for CloudWatch metrics"
+  type        = string
+}
+
 variable "log_retention_in_days" {
   description = "Retention period for CloudWatch Log Group"
   type        = number
