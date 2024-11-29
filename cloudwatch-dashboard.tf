@@ -5,11 +5,31 @@ resource "aws_cloudwatch_dashboard" "api_gateway_dashboard" {
 
   dashboard_body = jsonencode({
     widgets = [
-      # 4xx Errors Widget
+
+      # Overall Traffic Widget (First Line)
       {
         type   = "metric"
         x      = 0
         y      = 0
+        width  = 24
+        height = 6
+        properties = {
+          view   = "timeSeries"
+          title  = "Overall Traffic (Request Count)"
+          region = var.aws_region
+          metrics = [
+            ["AWS/ApiGateway", "Count", "ApiName", var.api_name, { "stat" : "Sum" }]
+          ]
+          period = 300
+          stat   = "Sum"
+        }
+      },
+
+      # 4xx Errors Widget (Second Line)
+      {
+        type   = "metric"
+        x      = 0
+        y      = 6
         width  = 12
         height = 6
         properties = {
@@ -33,11 +53,11 @@ resource "aws_cloudwatch_dashboard" "api_gateway_dashboard" {
         }
       },
 
-      # 5xx Errors Widget
+      # 5xx Errors Widget (Second Line)
       {
         type   = "metric"
         x      = 12
-        y      = 0
+        y      = 6
         width  = 12
         height = 6
         properties = {
@@ -61,11 +81,11 @@ resource "aws_cloudwatch_dashboard" "api_gateway_dashboard" {
         }
       },
 
-      # Integration Latency Widget
+      # Integration Latency Widget (Third Line)
       {
         type   = "metric"
         x      = 0
-        y      = 6
+        y      = 12
         width  = 12
         height = 6
         properties = {
@@ -80,11 +100,11 @@ resource "aws_cloudwatch_dashboard" "api_gateway_dashboard" {
         }
       },
 
-      # Overall Latency Widget
+      # Overall Latency Widget (Third Line)
       {
         type   = "metric"
         x      = 12
-        y      = 6
+        y      = 12
         width  = 12
         height = 6
         properties = {
@@ -97,7 +117,47 @@ resource "aws_cloudwatch_dashboard" "api_gateway_dashboard" {
           period = 300
           stat   = "Average"
         }
+      },
+
+      # Latency Percentiles Widget (Fourth Line)
+      {
+        type   = "metric"
+        x      = 0
+        y      = 18
+        width  = 12
+        height = 6
+        properties = {
+          view   = "timeSeries"
+          title  = "Latency Percentiles (P50, P90, P99)"
+          region = var.aws_region
+          metrics = [
+            ["AWS/ApiGateway", "Latency", "ApiName", var.api_name, { "stat" : "p50" }],
+            ["AWS/ApiGateway", "Latency", "ApiName", var.api_name, { "stat" : "p90" }],
+            ["AWS/ApiGateway", "Latency", "ApiName", var.api_name, { "stat" : "p99" }]
+          ]
+          period = 300
+        }
+      },
+
+      # Latency Comparison Widget (Fourth Line)
+      {
+        type   = "metric"
+        x      = 12
+        y      = 18
+        width  = 12
+        height = 6
+        properties = {
+          view   = "timeSeries"
+          title  = "Latency Comparison (Overall vs. Integration)"
+          region = var.aws_region
+          metrics = [
+            ["AWS/ApiGateway", "Latency", "ApiName", var.api_name, { "stat" : "Average" }],
+            ["AWS/ApiGateway", "IntegrationLatency", "ApiName", var.api_name, { "stat" : "Average" }]
+          ]
+          period = 300
+        }
       }
+
     ]
   })
 }
