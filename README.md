@@ -48,21 +48,23 @@ module "api_gateway" {
 
 ## Inputs
 
-| Name                       | Description                                      | Type   | Default          | Required |
-|----------------------------|--------------------------------------------------|--------|------------------|----------|
-| api_description            | Description of the API Gateway                   | string | null             | no       |
-| api_mapping_key            | Mapping key for the API Gateway custom domain    | string | ""               | no       |
-| api_name                   | Name of the API Gateway                          | string | n/a              | yes      |
-| api_stage_description      | Description of the API Gateway stage             | string | null             | no       |
-| aws_region                 | Region for Cloudwatch Dashboard                  | string | n/a              | yes      |
-| api_stage_name             | Name of the API Gateway stage                    | string | n/a              | yes      |
-| custom_domain_name         | Custom domain name for the API Gateway           | string | n/a              | yes      |
-| enable_dashboards          | Enable CloudWatch dashboards for API Gateway     | bool   | false            | no       |
-| hosted_zone_id             | Hosted zone ID for the custom domain             | string | n/a              | yes      |
-| log_group_name             | Name of Log Group                                | string | api_name         | no       |
-| log_retention_in_days      | Retention period for the CloudWatch log group    | number | 14               | no       |
-| log_role_name              | Name of the IAM role for CloudWatch logging      | string | n/a              | yes      |
-| routes                     | Map of route keys to Lambda integration ARNs     | map    | n/a              | yes      |
+| Name                         | Description                                      | Type   | Default          | Required |
+|------------------------------|--------------------------------------------------|--------|------------------|----------|
+| api_description              | Description of the API Gateway                   | string | null             | no       |
+| api_mapping_key              | Mapping key for the API Gateway custom domain    | string | ""               | no       |
+| api_name                     | Name of the API Gateway                          | string | n/a              | yes      |
+| api_stage_description        | Description of the API Gateway stage             | string | null             | no       |
+| aws_region                   | Region for Cloudwatch Dashboard                  | string | n/a              | yes      |
+| api_stage_name               | Name of the API Gateway stage                    | string | n/a              | yes      |
+| custom_domain_name           | Custom domain name for the API Gateway           | string | n/a              | yes      |
+| enable_dashboards            | Enable CloudWatch dashboards for API Gateway     | bool   | false            | no       |
+| hosted_zone_id               | Hosted zone ID for the custom domain             | string | n/a              | yes      |
+| log_group_name               | Name of Log Group                                | string | api_name         | no       |
+| log_retention_in_days        | Retention period for the CloudWatch log group    | number | 14               | no       |
+| log_role_name                | Name of the IAM role for CloudWatch logging      | string | n/a              | yes      |
+| routes                       | Map of route keys to Lambda integration ARNs     | map    | n/a              | yes      |
+| route_throttling_burst_limit | Burst Limit for routes                           | map    | 1000             | no       |
+| route_throttling_rate_limit  | Rate Limit for routes                            | map    | 500              | no       |
 
 
 ## Outputs
