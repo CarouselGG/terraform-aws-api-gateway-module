@@ -38,7 +38,7 @@ resource "aws_cloudwatch_dashboard" "api_gateway_dashboard" {
         "height" : 6,
         "properties" : {
           "metrics" : [
-            ["AWS/ApiGatewayv2", "Latency", "ApiId", aws_apigatewayv2_api.api.id, "Stage", aws_apigatewayv2_stage.api_stage.name, {
+            ["AWS/HttpApi", "Latency", "ApiId", aws_apigatewayv2_api.api.id, "Stage", aws_apigatewayv2_stage.api_stage.name, {
               "stat" : "Average",
               "label" : "Average Latency"
             }],
@@ -65,8 +65,8 @@ resource "aws_cloudwatch_dashboard" "api_gateway_dashboard" {
         "height" : 6,
         "properties" : {
           "metrics" : [
-            ["API-Gateway-Metrics", aws_cloudwatch_log_metric_filter.errors_5xx.name],
-            ["API-Gateway-Metrics", aws_cloudwatch_log_metric_filter.success_2xx.name]
+            ["AWS/HttpApi", aws_cloudwatch_log_metric_filter.errors_5xx.name],
+            ["AWS/HttpApi", aws_cloudwatch_log_metric_filter.success_2xx.name]
           ],
           "view" : "gauge",
           "stacked" : false,
