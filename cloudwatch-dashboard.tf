@@ -14,7 +14,7 @@ resource "aws_cloudwatch_dashboard" "api_gateway_dashboard" {
         "height" : 6,
         "properties" : {
           "metrics" : [
-            ["API-Gateway-Metrics", "TotalRequests"],
+            [var.api_name, "TotalRequests"],
             [".", aws_cloudwatch_log_metric_filter.errors_3xx.name],
             [".", aws_cloudwatch_log_metric_filter.errors_4xx.name],
             [".", aws_cloudwatch_log_metric_filter.errors_5xx.name],
@@ -22,61 +22,53 @@ resource "aws_cloudwatch_dashboard" "api_gateway_dashboard" {
           ],
           "view" : "timeSeries",
           "stacked" : false,
-          "region" : "${var.aws_region}",
+          "region" : var.aws_region,
           "stat" : "Sum",
           "period" : 300,
           "title" : "API Gateway Requests and Errors"
         }
       },
 
-      // Metric showing current average latency in singleValue with p99 in single value view over last hour for api var.api_name
+      // Average Latency
       {
         "type" : "metric",
         "x" : 0,
         "y" : 6,
-        "width" : 12,
+        "width" : 24,
         "height" : 6,
         "properties" : {
           "metrics" : [
-            ["AWS/HttpApi", "IntegrationLatency", "ApiId", aws_apigatewayv2_api.api.id, "Stage", aws_apigatewayv2_stage.api_stage.name, {
-              "stat" : "Average"
-            }]
+            ["AWS/ApiGateway", "Latency", "ApiName", var.api_name, "Stage", var.api_stage_name, { "region" : var.aws_region }]
           ],
-          "view" : "singleValue",
+          "view" : "timeSeries",
           "stacked" : false,
-          "region" : "${var.aws_region}",
-          "period" : 3600,
-          "title" : "API Integration Latency"
+          "region" : var.aws_region,
+          "stat" : "Average",
+          "period" : 360,
+          "title" : "API Gateway Latency"
         }
       },
 
-
-      // Success Rate metric that uses a guage view to compare 2xx to 5xx errors. should be green for 2xx and red for 5xx
+      // Success Rate
       {
         "type" : "metric",
-        "x" : 12,
-        "y" : 6,
-        "width" : 12,
+        "x" : 0,
+        "y" : 12,
+        "width" : 24,
         "height" : 6,
         "properties" : {
           "metrics" : [
-            ["AWS/HttpApi", aws_cloudwatch_log_metric_filter.errors_5xx.name],
-            ["AWS/HttpApi", aws_cloudwatch_log_metric_filter.success_2xx.name]
+            [{ "color" : "#2ca02c", "expression" : "(1 - (m1/m2))*100", "id" : "e1", "label" : "Success Rate", "region" : var.aws_region }],
+            [var.api_name, "2xxSuccess", { "id" : "m2", "visible" : false, "region" : var.aws_region }],
+            [".", "5xxErrors", { "id" : "m1", "visible" : false, "region" : var.aws_region }]
           ],
-          "view" : "gauge",
-          "stacked" : false,
-          "region" : "${var.aws_region}",
-          "stat" : "Average",
-          "period" : 300,
-          "title" : "Success Rate",
-          "yAxis" : {
-            "left" : {
-              "min" : 0,
-              "max" : 100
-            }
-          }
+          "view" : "guage",
+          "region" : var.aws_region,
+          "stat" : "Sum",
+          "period" : 3600,
+          "title" : "Success Rate"
         }
-      },
+      }
     ]
   })
 }

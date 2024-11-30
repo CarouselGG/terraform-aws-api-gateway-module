@@ -6,7 +6,7 @@ resource "aws_cloudwatch_log_metric_filter" "total_requests" {
 
   metric_transformation {
     name      = "TotalRequests"
-    namespace = "API-Gateway-Metrics"
+    namespace = var.api_name
     value     = "1"
   }
 }
@@ -19,7 +19,7 @@ resource "aws_cloudwatch_log_metric_filter" "success_2xx" {
 
   metric_transformation {
     name      = "2xxSuccess"
-    namespace = "API-Gateway-Metrics"
+    namespace = var.api_name
     value     = "1"
   }
 }
@@ -32,7 +32,7 @@ resource "aws_cloudwatch_log_metric_filter" "errors_3xx" {
 
   metric_transformation {
     name      = "3xxErrors"
-    namespace = "API-Gateway-Metrics"
+    namespace = var.api_name
     value     = "1"
   }
 }
@@ -45,7 +45,7 @@ resource "aws_cloudwatch_log_metric_filter" "errors_4xx" {
 
   metric_transformation {
     name      = "4xxErrors"
-    namespace = "API-Gateway-Metrics"
+    namespace = var.api_name
     value     = "1"
   }
 }
@@ -58,7 +58,7 @@ resource "aws_cloudwatch_log_metric_filter" "errors_5xx" {
 
   metric_transformation {
     name      = "5xxErrors"
-    namespace = "API-Gateway-Metrics"
+    namespace = var.api_name
     value     = "1"
   }
 }
@@ -71,7 +71,7 @@ resource "aws_cloudwatch_log_metric_filter" "errors_other" {
 
   metric_transformation {
     name      = "OtherErrors"
-    namespace = "API-Gateway-Metrics"
+    namespace = var.api_name
     value     = "1"
   }
 }
@@ -84,7 +84,7 @@ resource "aws_cloudwatch_log_metric_filter" "latency_p99" {
 
   metric_transformation {
     name      = "LatencyP99"
-    namespace = "API-Gateway-Metrics"
+    namespace = var.api_name
     value     = "$.latency"
   }
 }
