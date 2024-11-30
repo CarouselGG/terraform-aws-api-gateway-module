@@ -2,8 +2,6 @@ locals {
   metric_namespace = var.api_name
 }
 
-
-
 # Total Requests
 resource "aws_cloudwatch_log_metric_filter" "total_requests" {
   log_group_name = "/aws/http-api/carousel-rules-api"
@@ -94,52 +92,3 @@ resource "aws_cloudwatch_log_metric_filter" "latency_p99" {
     value     = "$.latency"
   }
 }
-
-output "total_requests_name_and_namespace" {
-  value = [
-    aws_cloudwatch_log_metric_filter.total_requests.metric_transformation[0].name,
-    aws_cloudwatch_log_metric_filter.total_requests.metric_transformation[0].namespace,
-  ]
-},
-
-output "success_2xx_name_and_namespace" {
-  value = [
-    aws_cloudwatch_log_metric_filter.success_2xx.metric_transformation[0].name,
-    aws_cloudwatch_log_metric_filter.success_2xx.metric_transformation[0].namespace,
-  ]
-}
-
-output "errors_3xx_name_and_namespace" {
-  value = [
-    aws_cloudwatch_log_metric_filter.errors_3xx.metric_transformation[0].name,
-    aws_cloudwatch_log_metric_filter.errors_3xx.metric_transformation[0].namespace,
-  ]
-}
-
-output "errors_4xx_name_and_namespace" {
-  value = [
-    aws_cloudwatch_log_metric_filter.errors_4xx.metric_transformation[0].name,
-    aws_cloudwatch_log_metric_filter.errors_4xx.metric_transformation[0].namespace,
-  ]
-}
-output "errors_5xx_name_and_namespace" {
-  value = [
-    aws_cloudwatch_log_metric_filter.errors_5xx.metric_transformation[0].name,
-    aws_cloudwatch_log_metric_filter.errors_5xx.metric_transformation[0].namespace,
-  ]
-}
-
-output "errors_other_name_and_namespace" {
-  value = [
-    aws_cloudwatch_log_metric_filter.errors_other.metric_transformation[0].name,
-    aws_cloudwatch_log_metric_filter.errors_other.metric_transformation[0].namespace,
-  ]
-}
-
-output "latency_p99_name_and_namespace" {
-  value = [
-    aws_cloudwatch_log_metric_filter.latency_p99.metric_transformation[0].name,
-    aws_cloudwatch_log_metric_filter.latency_p99.metric_transformation[0].namespace,
-  ]
-}
-
