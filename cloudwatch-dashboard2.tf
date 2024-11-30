@@ -1,7 +1,7 @@
 resource "aws_cloudwatch_dashboard" "api_gateway_dashboard2" {
   count = var.enable_dashboards ? 1 : 0
 
-  dashboard_name = "${var.api_name}-dashboard"
+  dashboard_name = "${var.api_name}-dashboard-2"
 
   dashboard_body = jsonencode({
 
