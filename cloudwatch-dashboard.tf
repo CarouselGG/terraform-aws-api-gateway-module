@@ -14,7 +14,7 @@ resource "aws_cloudwatch_dashboard" "api_gateway_dashboard" {
         "height" : 6,
         "properties" : {
           "metrics" : [
-            [var.api_name, "TotalRequests"],
+            [local.metric_namespace, "TotalRequests"],
             [".", aws_cloudwatch_log_metric_filter.errors_3xx.name],
             [".", aws_cloudwatch_log_metric_filter.errors_4xx.name],
             [".", aws_cloudwatch_log_metric_filter.errors_5xx.name],
@@ -59,8 +59,8 @@ resource "aws_cloudwatch_dashboard" "api_gateway_dashboard" {
         "properties" : {
           "metrics" : [
             [{ "color" : "#2ca02c", "expression" : "(1 - (m1/m2))*100", "id" : "e1", "label" : "Success Rate", "region" : var.aws_region }],
-            [var.api_name, "2xxSuccess", { "id" : "m2", "visible" : false, "region" : var.aws_region }],
-            [".", "5xxErrors", { "id" : "m1", "visible" : false, "region" : var.aws_region }]
+            [local.metric_namespace, aws_cloudwatch_log_metric_filter.success_2xx.name, { "id" : "m2", "visible" : false, "region" : var.aws_region }],
+            [".", aws_cloudwatch_log_metric_filter.errors_5xx.name, { "id" : "m1", "visible" : false, "region" : var.aws_region }]
           ],
           "view" : "guage",
           "region" : var.aws_region,
