@@ -14,7 +14,7 @@ resource "aws_cloudwatch_dashboard" "api_gateway_dashboard" {
         "height" : 6,
         "properties" : {
           "metrics" : [
-            ["AAWS/ApiGatewayv2", "TotalRequests"],
+            ["API-Gateway-Metrics", "TotalRequests"],
             [".", aws_cloudwatch_log_metric_filter.errors_3xx.name],
             [".", aws_cloudwatch_log_metric_filter.errors_4xx.name],
             [".", aws_cloudwatch_log_metric_filter.errors_5xx.name],
@@ -38,7 +38,26 @@ resource "aws_cloudwatch_dashboard" "api_gateway_dashboard" {
         "height" : 6,
         "properties" : {
           "metrics" : [
-            ["AAWS/ApiGatewayv2", "Latency", "APIName", var.api_name, "Stage", aws_apigatewayv2_stage.api_stage.name, {
+            ["AWS/ApiGatewayv2", "Latency", "ApiId", aws_apigatewayv2_api.api.id, "Stage", aws_apigatewayv2_stage.api_stage.name, {
+              "stat" : "p99"
+            }]
+          ],
+          "view" : "singleValue",
+          "stacked" : false,
+          "region" : "${var.aws_region}",
+          "period" : 3600,
+          "title" : "API Latency (p99)"
+        }
+      },
+      {
+        "type" : "metric",
+        "x" : 0,
+        "y" : 6,
+        "width" : 12,
+        "height" : 6,
+        "properties" : {
+          "metrics" : [
+            ["API-Gateway-Metrics", "Latency", "APIName", var.api_name, "Stage", aws_apigatewayv2_stage.api_stage.name, {
               "stat" : "p99"
             }]
           ],
@@ -59,7 +78,7 @@ resource "aws_cloudwatch_dashboard" "api_gateway_dashboard" {
         "height" : 6,
         "properties" : {
           "metrics" : [
-            ["AAWS/ApiGatewayv2", "Latency", "APIName", var.api_name, "Stage", aws_apigatewayv2_stage.api_stage.name, {
+            ["API-Gateway-Metrics", "Latency", "APIName", var.api_name, "Stage", aws_apigatewayv2_stage.api_stage.name, {
               "stat" : "Average"
             }]
           ],
@@ -80,8 +99,8 @@ resource "aws_cloudwatch_dashboard" "api_gateway_dashboard" {
         "height" : 6,
         "properties" : {
           "metrics" : [
-            ["AAWS/ApiGatewayv2", aws_cloudwatch_log_metric_filter.errors_5xx.name],
-            ["AAWS/ApiGatewayv2", aws_cloudwatch_log_metric_filter.success_2xx.name]
+            ["API-Gateway-Metrics", aws_cloudwatch_log_metric_filter.errors_5xx.name],
+            ["API-Gateway-Metrics", aws_cloudwatch_log_metric_filter.success_2xx.name]
           ],
           "view" : "gauge",
           "stacked" : false,
