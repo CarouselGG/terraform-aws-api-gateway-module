@@ -59,7 +59,7 @@ resource "aws_cloudwatch_dashboard" "api_gateway_dashboard" {
         "properties" : {
           "metrics" : [
             [".", aws_cloudwatch_log_metric_filter.errors_5xx.name],
-            [".", aws_cloudwatch_log_metric_filter.errors_2xx.name]
+            [".", aws_cloudwatch_log_metric_filter.success_2xx.name]
           ],
           "view" : "gauge",
           "stacked" : false,

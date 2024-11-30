@@ -75,3 +75,16 @@ resource "aws_cloudwatch_log_metric_filter" "errors_other" {
     value     = "1"
   }
 }
+
+# Latency P99
+resource "aws_cloudwatch_log_metric_filter" "latency_p99" {
+  log_group_name = "/aws/http-api/carousel-rules-api"
+  name           = "LatencyP99"
+  pattern        = "{ $.httpMethod = * }"
+
+  metric_transformation {
+    name      = "LatencyP99"
+    namespace = "API-Gateway-Metrics"
+    value     = "$.latency"
+  }
+}
