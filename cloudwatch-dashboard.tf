@@ -39,7 +39,7 @@ resource "aws_cloudwatch_dashboard" "api_gateway_dashboard" {
         "properties" : {
           "metrics" : [
             ["API-Gateway-Metrics", "Latency"],
-            [".", aws_cloudwatch_log_metric_filter.latency_p99.name]
+            ["API-Gateway-Metrics", aws_cloudwatch_log_metric_filter.latency_p99.name]
           ],
           "view" : "singleValue",
           "stacked" : false,
@@ -49,6 +49,8 @@ resource "aws_cloudwatch_dashboard" "api_gateway_dashboard" {
           "title" : "Latency"
         }
       },
+
+
       // Success Rate metric that uses a guage view to compare 2xx to 5xx errors. should be green for 2xx and red for 5xx
       {
         "type" : "metric",
@@ -58,8 +60,8 @@ resource "aws_cloudwatch_dashboard" "api_gateway_dashboard" {
         "height" : 6,
         "properties" : {
           "metrics" : [
-            [".", aws_cloudwatch_log_metric_filter.errors_5xx.name],
-            [".", aws_cloudwatch_log_metric_filter.success_2xx.name]
+            ["API-Gateway-Metrics", aws_cloudwatch_log_metric_filter.errors_5xx.name],
+            ["API-Gateway-Metrics", aws_cloudwatch_log_metric_filter.success_2xx.name]
           ],
           "view" : "gauge",
           "stacked" : false,
@@ -74,7 +76,7 @@ resource "aws_cloudwatch_dashboard" "api_gateway_dashboard" {
             }
           }
         }
-      }
+      },
     ]
   })
 }
