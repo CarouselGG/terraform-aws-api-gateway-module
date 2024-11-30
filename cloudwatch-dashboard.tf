@@ -42,9 +42,9 @@ resource "aws_cloudwatch_dashboard" "api_gateway_dashboard" {
               "AWS/ApiGateway",
               "Latency",
               "ApiName",
-              "${var.api_name}",
+              var.api_name,
               "Stage",
-              "v1",
+              aws_apigatewayv2_stage.api_stage.name,
               { "region" : "${var.aws_region}" }
             ]
           ],
