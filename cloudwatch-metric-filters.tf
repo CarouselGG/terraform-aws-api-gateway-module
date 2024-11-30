@@ -1,4 +1,4 @@
-# Metric Filters for API Gateway Logs
+# Total Requests
 resource "aws_cloudwatch_log_metric_filter" "total_requests" {
   log_group_name = "/aws/http-api/carousel-rules-api"
   name           = "TotalRequests"
@@ -11,10 +11,24 @@ resource "aws_cloudwatch_log_metric_filter" "total_requests" {
   }
 }
 
+# 2xx Errors
+resource "aws_cloudwatch_log_metric_filter" "success_2xx" {
+  log_group_name = "/aws/http-api/carousel-rules-api"
+  name           = "2xxSuccess"
+  pattern        = "{ $.statusCode =~ /^2[0-9][0-9]$/ }"
+
+  metric_transformation {
+    name      = "2xxSuccess"
+    namespace = "API-Gateway-Metrics"
+    value     = "1"
+  }
+}
+
+# 3xx Errors
 resource "aws_cloudwatch_log_metric_filter" "errors_3xx" {
   log_group_name = "/aws/http-api/carousel-rules-api"
   name           = "3xxErrors"
-  pattern        = "{ $.statusCode like \"3*\" }"
+  pattern        = "{ $.statusCode =~ /^3[0-9][0-9]$/ }"
 
   metric_transformation {
     name      = "3xxErrors"
@@ -23,10 +37,11 @@ resource "aws_cloudwatch_log_metric_filter" "errors_3xx" {
   }
 }
 
+# 4xx Errors
 resource "aws_cloudwatch_log_metric_filter" "errors_4xx" {
   log_group_name = "/aws/http-api/carousel-rules-api"
   name           = "4xxErrors"
-  pattern        = "{ $.statusCode like \"4*\" }"
+  pattern        = "{ $.statusCode =~ /^4[0-9][0-9]$/ }"
 
   metric_transformation {
     name      = "4xxErrors"
@@ -35,10 +50,11 @@ resource "aws_cloudwatch_log_metric_filter" "errors_4xx" {
   }
 }
 
+# 5xx Errors
 resource "aws_cloudwatch_log_metric_filter" "errors_5xx" {
   log_group_name = "/aws/http-api/carousel-rules-api"
   name           = "5xxErrors"
-  pattern        = "{ $.statusCode like \"5*\" }"
+  pattern        = "{ $.statusCode =~ /^5[0-9][0-9]$/ }"
 
   metric_transformation {
     name      = "5xxErrors"
@@ -47,10 +63,11 @@ resource "aws_cloudwatch_log_metric_filter" "errors_5xx" {
   }
 }
 
+# Other Errors
 resource "aws_cloudwatch_log_metric_filter" "errors_other" {
   log_group_name = "/aws/http-api/carousel-rules-api"
   name           = "OtherErrors"
-  pattern        = "{ $.statusCode not like \"2*\" && $.statusCode not like \"3*\" && $.statusCode not like \"4*\" && $.statusCode not like \"5*\" }"
+  pattern        = "{ $.statusCode != /^2[0-9][0-9]$/ && $.statusCode != /^3[0-9][0-9]$/ && $.statusCode != /^4[0-9][0-9]$/ && $.statusCode != /^5[0-9][0-9]$/ }"
 
   metric_transformation {
     name      = "OtherErrors"
