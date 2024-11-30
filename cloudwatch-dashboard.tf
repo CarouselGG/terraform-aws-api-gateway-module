@@ -38,18 +38,23 @@ resource "aws_cloudwatch_dashboard" "api_gateway_dashboard" {
         "height" : 6,
         "properties" : {
           "metrics" : [
-            ["API-Gateway-Metrics", "Latency"],
-            ["API-Gateway-Metrics", aws_cloudwatch_log_metric_filter.latency_p99.name]
+            [
+              "AWS/ApiGateway",
+              "Latency",
+              "ApiName",
+              "${var.api_name}",
+              "Stage",
+              "v1",
+              { "region" : "${var.aws_region}" }
+            ]
           ],
-          "view" : "singleValue",
-          "stacked" : false,
           "region" : "${var.aws_region}",
-          "stat" : "Average",
-          "period" : 300,
-          "title" : "Latency"
+          "stat" : "p99",
+          "title" : "Latency",
+          "view" : "singleValue",
+          "period" : 300
         }
       },
-
 
       // Success Rate metric that uses a guage view to compare 2xx to 5xx errors. should be green for 2xx and red for 5xx
       {
