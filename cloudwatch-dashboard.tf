@@ -38,29 +38,36 @@ resource "aws_cloudwatch_dashboard" "api_gateway_dashboard" {
         "height" : 6,
         "properties" : {
           "metrics" : [
-            [
-              {
-                "expression" : "AVG(latency)",
-                "label" : "Average Latency",
-                "id" : "latency"
-              }
-            ],
-            [
-              {
-                "expression" : "AVG(latency)",
-                "label" : "Average Latency",
-                "id" : "latency",
-                "period" : 3600,
-                "region" : "${var.aws_region}"
-              }
-            ],
+            ["API-Gateway-Metrics", "Latency", "APIName", var.api_name, "Stage", aws_apigatewayv2_stage.name, {
+              "stat" : "p99"
+            }]
           ],
-
-          "region" : "${var.aws_region}",
-          "stat" : "Average",
-          "title" : "Latency",
           "view" : "singleValue",
-          "period" : 300
+          "stacked" : false,
+          "region" : "${var.aws_region}",
+          "period" : 3600,
+          "title" : "API Latency (p99)"
+        }
+      },
+
+      // Metric showing current average latency in singleValue with p99 in single value view over last hour for api var.api_name
+      {
+        "type" : "metric",
+        "x" : 12,
+        "y" : 6,
+        "width" : 12,
+        "height" : 6,
+        "properties" : {
+          "metrics" : [
+            ["API-Gateway-Metrics", "Latency", "APIName", var.api_name, "Stage", aws_apigatewayv2_stage.name, {
+              "stat" : "Average"
+            }]
+          ],
+          "view" : "singleValue",
+          "stacked" : false,
+          "region" : "${var.aws_region}",
+          "period" : 300,
+          "title" : "API Latency (avg)"
         }
       },
 
