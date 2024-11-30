@@ -12,14 +12,13 @@ resource "aws_apigatewayv2_stage" "api_stage" {
   description = var.api_stage_description
   auto_deploy = true
 
-  # Enable detailed metrics
   default_route_settings {
     detailed_metrics_enabled = true
   }
 
   # Access logs configuration
   access_log_settings {
-    destination_arn = var.access_log_destination_arn
+    destination_arn = aws_cloudwatch_log_group.api_gateway_log_group.arn
     format = jsonencode({
       requestId      = "$context.requestId",
       ip             = "$context.identity.sourceIp",

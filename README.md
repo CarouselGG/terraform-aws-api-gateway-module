@@ -50,7 +50,6 @@ module "api_gateway" {
 
 | Name                       | Description                                      | Type   | Default          | Required |
 |----------------------------|--------------------------------------------------|--------|------------------|----------|
-| access_log_destination_arn | CloudWatch Log Group ARN for access logs         | string | n/a              | yes      |
 | api_description            | Description of the API Gateway                   | string | null             | no       |
 | api_mapping_key            | Mapping key for the API Gateway custom domain    | string | ""               | no       |
 | api_name                   | Name of the API Gateway                          | string | n/a              | yes      |

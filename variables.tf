@@ -20,11 +20,6 @@ variable "api_stage_description" {
   default     = null
 }
 
-variable "access_log_destination_arn" {
-  description = "CloudWatch Log Group ARN for access logs"
-  type        = string
-}
-
 variable "routes" {
   description = "Map of route keys to Lambda integration ARNs"
   type        = map(string)
