@@ -69,7 +69,7 @@ variable "log_role_name" {
   type        = string
 }
 
-variable "route_throttlling_burst_limit" {
+variable "route_throttling_burst_limit" {
   description = "Burst limit for throttling"
   type        = number
   default     = 1000
