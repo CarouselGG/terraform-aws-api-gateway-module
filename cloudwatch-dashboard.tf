@@ -38,20 +38,15 @@ resource "aws_cloudwatch_dashboard" "api_gateway_dashboard" {
         "height" : 6,
         "properties" : {
           "metrics" : [
-            ["AWS/HttpApi", "Latency", "ApiId", aws_apigatewayv2_api.api.id, "Stage", aws_apigatewayv2_stage.api_stage.name, {
-              "stat" : "Average",
-              "label" : "Average Latency"
-            }],
-            [".", ".", ".", ".", ".", ".", {
-              "stat" : "Maximum",
-              "label" : "Max Latency"
+            ["AWS/HttpApi", "IntegrationLatency", "ApiId", aws_apigatewayv2_api.api.id, "Stage", aws_apigatewayv2_stage.api_stage.name, {
+              "stat" : "Average"
             }]
           ],
           "view" : "singleValue",
           "stacked" : false,
           "region" : "${var.aws_region}",
-          "period" : 86400,
-          "title" : "API Latency (24h)"
+          "period" : 3600,
+          "title" : "API Integration Latency"
         }
       },
 
