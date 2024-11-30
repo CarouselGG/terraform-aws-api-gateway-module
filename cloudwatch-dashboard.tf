@@ -38,7 +38,7 @@ resource "aws_cloudwatch_dashboard" "api_gateway_dashboard" {
         "height" : 6,
         "properties" : {
           "metrics" : [
-            ["API-Gateway-Metrics", "Latency", "APIName", var.api_name, "Stage", aws_apigatewayv2_stage.name, {
+            ["API-Gateway-Metrics", "Latency", "APIName", var.api_name, "Stage", aws_apigatewayv2_stage.api_stage.name, {
               "stat" : "p99"
             }]
           ],
@@ -59,7 +59,7 @@ resource "aws_cloudwatch_dashboard" "api_gateway_dashboard" {
         "height" : 6,
         "properties" : {
           "metrics" : [
-            ["API-Gateway-Metrics", "Latency", "APIName", var.api_name, "Stage", aws_apigatewayv2_stage.name, {
+            ["API-Gateway-Metrics", "Latency", "APIName", var.api_name, "Stage", aws_apigatewayv2_stage.api_stage.name, {
               "stat" : "Average"
             }]
           ],
