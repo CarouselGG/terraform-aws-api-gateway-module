@@ -11,11 +11,11 @@ resource "aws_cloudwatch_log_metric_filter" "total_requests" {
   }
 }
 
-# 2xx Errors
+# 2xx Success
 resource "aws_cloudwatch_log_metric_filter" "success_2xx" {
   log_group_name = "/aws/http-api/carousel-rules-api"
   name           = "2xxSuccess"
-  pattern        = "{ $.statusCode =~ /^2[0-9][0-9]$/ }"
+  pattern        = "{ $.statusCode >= 200 && $.statusCode < 300 }"
 
   metric_transformation {
     name      = "2xxSuccess"
@@ -24,11 +24,11 @@ resource "aws_cloudwatch_log_metric_filter" "success_2xx" {
   }
 }
 
-# 3xx Errors
+# 3xx Redirects
 resource "aws_cloudwatch_log_metric_filter" "errors_3xx" {
   log_group_name = "/aws/http-api/carousel-rules-api"
   name           = "3xxErrors"
-  pattern        = "{ $.statusCode =~ /^3[0-9][0-9]$/ }"
+  pattern        = "{ $.statusCode >= 300 && $.statusCode < 400 }"
 
   metric_transformation {
     name      = "3xxErrors"
@@ -37,11 +37,11 @@ resource "aws_cloudwatch_log_metric_filter" "errors_3xx" {
   }
 }
 
-# 4xx Errors
+# 4xx Client Errors
 resource "aws_cloudwatch_log_metric_filter" "errors_4xx" {
   log_group_name = "/aws/http-api/carousel-rules-api"
   name           = "4xxErrors"
-  pattern        = "{ $.statusCode =~ /^4[0-9][0-9]$/ }"
+  pattern        = "{ $.statusCode >= 400 && $.statusCode < 500 }"
 
   metric_transformation {
     name      = "4xxErrors"
@@ -50,11 +50,11 @@ resource "aws_cloudwatch_log_metric_filter" "errors_4xx" {
   }
 }
 
-# 5xx Errors
+# 5xx Server Errors
 resource "aws_cloudwatch_log_metric_filter" "errors_5xx" {
   log_group_name = "/aws/http-api/carousel-rules-api"
   name           = "5xxErrors"
-  pattern        = "{ $.statusCode =~ /^5[0-9][0-9]$/ }"
+  pattern        = "{ $.statusCode >= 500 && $.statusCode < 600 }"
 
   metric_transformation {
     name      = "5xxErrors"
@@ -67,7 +67,7 @@ resource "aws_cloudwatch_log_metric_filter" "errors_5xx" {
 resource "aws_cloudwatch_log_metric_filter" "errors_other" {
   log_group_name = "/aws/http-api/carousel-rules-api"
   name           = "OtherErrors"
-  pattern        = "{ $.statusCode != /^2[0-9][0-9]$/ && $.statusCode != /^3[0-9][0-9]$/ && $.statusCode != /^4[0-9][0-9]$/ && $.statusCode != /^5[0-9][0-9]$/ }"
+  pattern        = "{ $.statusCode < 200 || $.statusCode >= 600 }"
 
   metric_transformation {
     name      = "OtherErrors"
