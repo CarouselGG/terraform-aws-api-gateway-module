@@ -18,7 +18,7 @@ resource "aws_cloudwatch_dashboard" "api_gateway_dashboard" {
             [".", aws_cloudwatch_log_metric_filter.errors_3xx.name],
             [".", aws_cloudwatch_log_metric_filter.errors_4xx.name],
             [".", aws_cloudwatch_log_metric_filter.errors_5xx.name],
-            [".", aws_cloudwatch_log_metric_filter.errors_5xx.name],
+            [".", aws_cloudwatch_log_metric_filter.errors_other.name]
           ],
           "view" : "timeSeries",
           "stacked" : false,
