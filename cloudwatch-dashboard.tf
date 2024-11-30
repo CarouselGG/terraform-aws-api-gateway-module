@@ -39,56 +39,22 @@ resource "aws_cloudwatch_dashboard" "api_gateway_dashboard" {
         "properties" : {
           "metrics" : [
             ["AWS/ApiGatewayv2", "Latency", "ApiId", aws_apigatewayv2_api.api.id, "Stage", aws_apigatewayv2_stage.api_stage.name, {
-              "stat" : "p99"
+              "stat" : "Average",
+              "label" : "Average Latency"
+            }],
+            [".", ".", ".", ".", ".", ".", {
+              "stat" : "Maximum",
+              "label" : "Max Latency"
             }]
           ],
           "view" : "singleValue",
           "stacked" : false,
           "region" : "${var.aws_region}",
-          "period" : 3600,
-          "title" : "API Latency (p99)"
-        }
-      },
-      {
-        "type" : "metric",
-        "x" : 0,
-        "y" : 6,
-        "width" : 12,
-        "height" : 6,
-        "properties" : {
-          "metrics" : [
-            ["API-Gateway-Metrics", "Latency", "APIName", var.api_name, "Stage", aws_apigatewayv2_stage.api_stage.name, {
-              "stat" : "p99"
-            }]
-          ],
-          "view" : "singleValue",
-          "stacked" : false,
-          "region" : "${var.aws_region}",
-          "period" : 3600,
-          "title" : "API Latency (p99)"
+          "period" : 86400,
+          "title" : "API Latency (24h)"
         }
       },
 
-      // Metric showing current average latency in singleValue with p99 in single value view over last hour for api var.api_name
-      {
-        "type" : "metric",
-        "x" : 12,
-        "y" : 6,
-        "width" : 12,
-        "height" : 6,
-        "properties" : {
-          "metrics" : [
-            ["API-Gateway-Metrics", "Latency", "APIName", var.api_name, "Stage", aws_apigatewayv2_stage.api_stage.name, {
-              "stat" : "Average"
-            }]
-          ],
-          "view" : "singleValue",
-          "stacked" : false,
-          "region" : "${var.aws_region}",
-          "period" : 300,
-          "title" : "API Latency (avg)"
-        }
-      },
 
       // Success Rate metric that uses a guage view to compare 2xx to 5xx errors. should be green for 2xx and red for 5xx
       {
