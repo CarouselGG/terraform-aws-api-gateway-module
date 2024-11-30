@@ -80,7 +80,7 @@ resource "aws_cloudwatch_log_metric_filter" "errors_other" {
 resource "aws_cloudwatch_log_metric_filter" "latency_p99" {
   log_group_name = "/aws/http-api/carousel-rules-api"
   name           = "LatencyP99"
-  pattern        = "{ $.httpMethod = * }"
+  pattern        = "{ $.latency = * }"
 
   metric_transformation {
     name      = "LatencyP99"

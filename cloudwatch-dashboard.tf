@@ -39,17 +39,17 @@ resource "aws_cloudwatch_dashboard" "api_gateway_dashboard" {
         "properties" : {
           "metrics" : [
             [
-              "AWS/ApiGateway",
-              "Latency",
+              "API-Gateway-Metrics",
+              "LatencyP99",
               "ApiName",
-              var.api_name,
+              "${var.api_name}",
               "Stage",
-              aws_apigatewayv2_stage.api_stage.name,
+              "${aws_apigatewayv2_stage.api_stage.name}",
               { "region" : "${var.aws_region}" }
             ]
           ],
           "region" : "${var.aws_region}",
-          "stat" : "p99",
+          "stat" : "Average",
           "title" : "Latency",
           "view" : "singleValue",
           "period" : 300
