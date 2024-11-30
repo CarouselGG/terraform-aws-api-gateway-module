@@ -1,7 +1,3 @@
-locals {
-  metric_namespace = var.api_name
-}
-
 # Total Requests
 resource "aws_cloudwatch_log_metric_filter" "total_requests" {
   log_group_name = "/aws/http-api/carousel-rules-api"
