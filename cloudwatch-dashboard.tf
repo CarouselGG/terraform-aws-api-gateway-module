@@ -15,10 +15,10 @@ resource "aws_cloudwatch_dashboard" "api_gateway_dashboard" {
         "properties" : {
           "metrics" : [
             ["API-Gateway-Metrics", "TotalRequests"],
-            [".", "3xxErrors"],
-            [".", "4xxErrors"],
-            [".", "5xxErrors"],
-            [".", "OtherErrors"]
+            [".", aws_cloudwatch_log_metric_filter.errors_3xx.name],
+            [".", aws_cloudwatch_log_metric_filter.errors_4xx.name],
+            [".", aws_cloudwatch_log_metric_filter.errors_5xx.name],
+            [".", aws_cloudwatch_log_metric_filter.errors_5x.name],
           ],
           "view" : "timeSeries",
           "stacked" : false,
