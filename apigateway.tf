@@ -68,7 +68,7 @@ resource "aws_apigatewayv2_api_mapping" "api_mapping" {
 resource "aws_lambda_permission" "apigw_lambda_permissions" {
   for_each = var.routes
 
-  statement_id  = "AllowExecution-${uuidv5("namespace", each.key)}"
+  statement_id  = "AllowExecution-${substr(md5(each.key), 0, 8)}"
   action        = "lambda:InvokeFunction"
   function_name = each.value.function_name # Access function_name from the Lambda resource
   principal     = "apigateway.amazonaws.com"
