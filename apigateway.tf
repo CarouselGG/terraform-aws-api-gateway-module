@@ -66,11 +66,10 @@ resource "aws_apigatewayv2_api_mapping" "api_mapping" {
 
 resource "aws_lambda_permission" "apigw_lambda_permissions" {
   for_each = tomap({
-    for route, lambda_arn in var.routes : lambda_arn => route
+    for route, lambda_arn in var.routes : lambda_arn => lambda_arn
   })
 
-  statement_id = "AllowExecution-${replace(replace(each.key, " ", "_"), "/", "_")}-${substr(base64sha256(each.value), 0, 8)}"
-
+  statement_id  = "AllowExecution-${substr(base64sha256(each.key), 0, 8)}"
   action        = "lambda:InvokeFunction"
   function_name = each.key
   principal     = "apigateway.amazonaws.com"
