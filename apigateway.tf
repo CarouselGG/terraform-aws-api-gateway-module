@@ -43,7 +43,7 @@ resource "aws_apigatewayv2_integration" "integrations" {
 
   api_id             = aws_apigatewayv2_api.api.id
   integration_type   = "AWS_PROXY"
-  integration_uri    = each.value
+  integration_uri    = each.value.invoke_arn
   integration_method = "POST"
 }
 
@@ -65,13 +65,11 @@ resource "aws_apigatewayv2_api_mapping" "api_mapping" {
 }
 
 resource "aws_lambda_permission" "apigw_lambda_permissions" {
-  for_each = tomap({
-    for route, lambda_arn in var.routes : lambda_arn => lambda_arn
-  })
+  for_each = var.routes
 
   statement_id  = "AllowExecution-${substr(base64sha256(each.key), 0, 8)}"
   action        = "lambda:InvokeFunction"
-  function_name = split("/", split(":", each.value)[5])[0]
+  function_name = each.value.function_name # Access function_name from the Lambda resource
   principal     = "apigateway.amazonaws.com"
   source_arn    = "${aws_apigatewayv2_api.api.execution_arn}/*"
 }

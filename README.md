@@ -37,8 +37,8 @@ module "api_gateway" {
   log_role_name           = "example-api-logging-role"
 
   routes = {
-    "GET /example"  = aws_lambda_function.example_lambda.invoke_arn
-    "POST /example" = aws_lambda_function.example_post_lambda.invoke_arn
+    "GET /example"  = aws_lambda_function.example_lambda
+    "POST /example" = aws_lambda_function.example_post_lambda
   }
 }
 ```

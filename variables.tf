@@ -21,7 +21,7 @@ variable "api_stage_description" {
 }
 
 variable "routes" {
-  description = "Map of route keys to Lambda integration ARNs"
+  description = "Map of route Lambdas integration ARNs"
   type        = map(string)
 }
 
