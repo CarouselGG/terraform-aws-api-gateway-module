@@ -63,3 +63,15 @@ resource "aws_apigatewayv2_api_mapping" "api_mapping" {
   stage           = aws_apigatewayv2_stage.api_stage.id
   api_mapping_key = var.api_mapping_key
 }
+
+resource "aws_lambda_permission" "apigw_lambda_permissions" {
+  for_each = tomap({
+    for route, lambda_arn in var.routes : lambda_arn => route
+  })
+
+  statement_id  = "AllowExecutionFromAPIGateway-${replace(each.value, " ", "-")}"
+  action        = "lambda:InvokeFunction"
+  function_name = each.key
+  principal     = "apigateway.amazonaws.com"
+  source_arn    = "${aws_apigatewayv2_api.api.execution_arn}/*"
+}
