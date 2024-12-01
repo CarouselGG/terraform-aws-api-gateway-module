@@ -36,7 +36,11 @@ resource "aws_cloudwatch_dashboard" "api_gateway_dashboard" {
           "region" : var.aws_region,
           "stat" : "Sum",
           "period" : 300,
-          "title" : "API Gateway Requests and Errors"
+          "title" : "API Gateway Requests and Errors",
+          "yAxis" : {
+            "left" : { "min" : 0, "max" : 1000 },
+            "right" : { "min" : 0, "max" : 100 },
+          }
         }
       },
 
@@ -56,7 +60,11 @@ resource "aws_cloudwatch_dashboard" "api_gateway_dashboard" {
           "region" : var.aws_region,
           "stat" : "Average",
           "period" : 360,
-          "title" : "API Gateway Latency"
+          "title" : "API Gateway Latency",
+          "yAxis" : {
+            "left" : { "min" : 0, "max" : 1000 },
+            "right" : { "min" : 0, "max" : 100 },
+          }
         }
       },
 
