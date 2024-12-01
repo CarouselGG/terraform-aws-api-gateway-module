@@ -70,7 +70,7 @@ resource "aws_lambda_permission" "apigw_lambda_permissions" {
 
   statement_id  = "AllowExecution-${substr(md5(each.key), 0, 8)}"
   action        = "lambda:InvokeFunction"
-  function_name = each.value.function_name # Access function_name from the Lambda resource
+  function_name = each.value.function_name
   principal     = "apigateway.amazonaws.com"
   source_arn    = "${aws_apigatewayv2_api.api.execution_arn}/*"
 }
