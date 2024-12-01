@@ -22,7 +22,7 @@ variable "api_stage_description" {
 
 variable "routes" {
   description = "Map of route Lambdas integration ARNs"
-  type        = map(string)
+  type        = map(any)
 }
 
 variable "custom_domain_name" {
