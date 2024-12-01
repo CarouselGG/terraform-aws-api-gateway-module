@@ -62,8 +62,8 @@ resource "aws_cloudwatch_dashboard" "api_gateway_dashboard" {
           "period" : 360,
           "title" : "API Gateway Latency",
           "yAxis" : {
-            "left" : { "min" : 0, "max" : 1000 },
-            "right" : { "min" : 0, "max" : 100 },
+            "left" : { "min" : 0, "max" : 3000 },
+            "right" : {},
           }
         }
       },
@@ -85,7 +85,9 @@ resource "aws_cloudwatch_dashboard" "api_gateway_dashboard" {
           "region" : var.aws_region,
           "stat" : "Sum",
           "period" : 3600,
-          "title" : "Success Rate"
+          "title" : "Success Rate",
+          "left" : { "min" : 0, "max" : 100 },
+          "right" : {}
         }
       }
     ]
