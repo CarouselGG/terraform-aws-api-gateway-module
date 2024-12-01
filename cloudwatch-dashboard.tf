@@ -4,6 +4,13 @@ resource "aws_cloudwatch_dashboard" "api_gateway_dashboard" {
 
   depends_on = [
     aws_cloudwatch_log_group.api_gateway_log_group,
+    aws_cloudwatch_log_metric_filter.total_requests,
+    aws_cloudwatch_log_metric_filter.success_2xx,
+    aws_cloudwatch_log_metric_filter.errors_3xx,
+    aws_cloudwatch_log_metric_filter.errors_4xx,
+    aws_cloudwatch_log_metric_filter.errors_5xx,
+    aws_cloudwatch_log_metric_filter.errors_other,
+    aws_cloudwatch_log_metric_filter.latency_p99,
   ]
 
   dashboard_name = "${var.api_name}-dashboard"
