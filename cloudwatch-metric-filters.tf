@@ -1,5 +1,7 @@
 # Total Requests
 resource "aws_cloudwatch_log_metric_filter" "total_requests" {
+  count = var.enable_dashboards ? 1 : 0
+
   log_group_name = "/aws/http-api/carousel-rules-api"
   name           = "TotalRequests"
   pattern        = "{ $.httpMethod = * }"
@@ -9,10 +11,16 @@ resource "aws_cloudwatch_log_metric_filter" "total_requests" {
     namespace = local.metric_namespace
     value     = "1"
   }
+
+  depends_on = [
+    aws_cloudwatch_log_group.api_gateway_log_group,
+  ]
 }
 
 # 2xx Success
 resource "aws_cloudwatch_log_metric_filter" "success_2xx" {
+  count = var.enable_dashboards ? 1 : 0
+
   log_group_name = "/aws/http-api/carousel-rules-api"
   name           = "2xxSuccess"
   pattern        = "{ $.statusCode >= 200 && $.statusCode < 300 }"
@@ -22,10 +30,16 @@ resource "aws_cloudwatch_log_metric_filter" "success_2xx" {
     namespace = local.metric_namespace
     value     = "1"
   }
+
+  depends_on = [
+    aws_cloudwatch_log_group.api_gateway_log_group,
+  ]
 }
 
 # 3xx Redirects
 resource "aws_cloudwatch_log_metric_filter" "errors_3xx" {
+  count = var.enable_dashboards ? 1 : 0
+
   log_group_name = "/aws/http-api/carousel-rules-api"
   name           = "3xxErrors"
   pattern        = "{ $.statusCode >= 300 && $.statusCode < 400 }"
@@ -35,10 +49,16 @@ resource "aws_cloudwatch_log_metric_filter" "errors_3xx" {
     namespace = local.metric_namespace
     value     = "1"
   }
+
+  depends_on = [
+    aws_cloudwatch_log_group.api_gateway_log_group,
+  ]
 }
 
 # 4xx Client Errors
 resource "aws_cloudwatch_log_metric_filter" "errors_4xx" {
+  count = var.enable_dashboards ? 1 : 0
+
   log_group_name = "/aws/http-api/carousel-rules-api"
   name           = "4xxErrors"
   pattern        = "{ $.statusCode >= 400 && $.statusCode < 500 }"
@@ -48,10 +68,16 @@ resource "aws_cloudwatch_log_metric_filter" "errors_4xx" {
     namespace = local.metric_namespace
     value     = "1"
   }
+
+  depends_on = [
+    aws_cloudwatch_log_group.api_gateway_log_group,
+  ]
 }
 
 # 5xx Server Errors
 resource "aws_cloudwatch_log_metric_filter" "errors_5xx" {
+  count = var.enable_dashboards ? 1 : 0
+
   log_group_name = "/aws/http-api/carousel-rules-api"
   name           = "5xxErrors"
   pattern        = "{ $.statusCode >= 500 && $.statusCode < 600 }"
@@ -61,10 +87,16 @@ resource "aws_cloudwatch_log_metric_filter" "errors_5xx" {
     namespace = local.metric_namespace
     value     = "1"
   }
+
+  depends_on = [
+    aws_cloudwatch_log_group.api_gateway_log_group,
+  ]
 }
 
 # Other Errors
 resource "aws_cloudwatch_log_metric_filter" "errors_other" {
+  count = var.enable_dashboards ? 1 : 0
+
   log_group_name = "/aws/http-api/carousel-rules-api"
   name           = "OtherErrors"
   pattern        = "{ $.statusCode < 200 || $.statusCode >= 600 }"
@@ -74,10 +106,16 @@ resource "aws_cloudwatch_log_metric_filter" "errors_other" {
     namespace = local.metric_namespace
     value     = "1"
   }
+
+  depends_on = [
+    aws_cloudwatch_log_group.api_gateway_log_group,
+  ]
 }
 
 # Latency P99
 resource "aws_cloudwatch_log_metric_filter" "latency_p99" {
+  count = var.enable_dashboards ? 1 : 0
+
   log_group_name = "/aws/http-api/carousel-rules-api"
   name           = "LatencyP99"
   pattern        = "{ $.latency = * }"
@@ -87,4 +125,8 @@ resource "aws_cloudwatch_log_metric_filter" "latency_p99" {
     namespace = local.metric_namespace
     value     = "$.latency"
   }
+
+  depends_on = [
+    aws_cloudwatch_log_group.api_gateway_log_group,
+  ]
 }
