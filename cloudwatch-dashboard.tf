@@ -4,13 +4,13 @@ resource "aws_cloudwatch_dashboard" "api_gateway_dashboard" {
 
   depends_on = [
     aws_cloudwatch_log_group.api_gateway_log_group,
-    aws_cloudwatch_log_metric_filter.total_requests,
-    aws_cloudwatch_log_metric_filter.success_2xx,
-    aws_cloudwatch_log_metric_filter.errors_3xx,
-    aws_cloudwatch_log_metric_filter.errors_4xx,
-    aws_cloudwatch_log_metric_filter.errors_5xx,
-    aws_cloudwatch_log_metric_filter.errors_other,
-    aws_cloudwatch_log_metric_filter.latency_p99,
+    aws_cloudwatch_log_metric_filter.total_requests[0],
+    aws_cloudwatch_log_metric_filter.success_2xx[0],
+    aws_cloudwatch_log_metric_filter.errors_3xx[0],
+    aws_cloudwatch_log_metric_filter.errors_4xx[0],
+    aws_cloudwatch_log_metric_filter.errors_5xx[0],
+    aws_cloudwatch_log_metric_filter.errors_other[0],
+    aws_cloudwatch_log_metric_filter.latency_p99[0],
   ]
 
   dashboard_name = "${var.api_name}-dashboard"
@@ -26,10 +26,10 @@ resource "aws_cloudwatch_dashboard" "api_gateway_dashboard" {
         "properties" : {
           "metrics" : [
             [local.metric_namespace, "TotalRequests"],
-            [".", aws_cloudwatch_log_metric_filter.errors_3xx.name],
-            [".", aws_cloudwatch_log_metric_filter.errors_4xx.name],
-            [".", aws_cloudwatch_log_metric_filter.errors_5xx.name],
-            [".", aws_cloudwatch_log_metric_filter.errors_other.name]
+            [".", aws_cloudwatch_log_metric_filter.errors_3xx[0].name],
+            [".", aws_cloudwatch_log_metric_filter.errors_4xx[0].name],
+            [".", aws_cloudwatch_log_metric_filter.errors_5xx[0].name],
+            [".", aws_cloudwatch_log_metric_filter.errors_other[0].name]
           ],
           "view" : "timeSeries",
           "stacked" : false,
@@ -70,10 +70,10 @@ resource "aws_cloudwatch_dashboard" "api_gateway_dashboard" {
         "properties" : {
           "metrics" : [
             [{ "color" : "#2ca02c", "expression" : "(1 - (m1/m2))*100", "id" : "e1", "label" : "Success Rate", "region" : var.aws_region }],
-            [local.metric_namespace, aws_cloudwatch_log_metric_filter.success_2xx.name, { "id" : "m2", "visible" : false, "region" : var.aws_region }],
-            [".", aws_cloudwatch_log_metric_filter.errors_5xx.name, { "id" : "m1", "visible" : false, "region" : var.aws_region }]
+            [local.metric_namespace, aws_cloudwatch_log_metric_filter.success_2xx[0].name, { "id" : "m2", "visible" : false, "region" : var.aws_region }],
+            [".", aws_cloudwatch_log_metric_filter.errors_5xx[0].name, { "id" : "m1", "visible" : false, "region" : var.aws_region }]
           ],
-          "view" : "guage",
+          "view" : "gauge",
           "region" : var.aws_region,
           "stat" : "Sum",
           "period" : 3600,
