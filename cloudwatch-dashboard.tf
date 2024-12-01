@@ -2,6 +2,10 @@
 resource "aws_cloudwatch_dashboard" "api_gateway_dashboard" {
   count = var.enable_dashboards ? 1 : 0
 
+  depends_on = [
+    aws_cloudwatch_log_group.api_gateway_log_group,
+  ]
+
   dashboard_name = "${var.api_name}-dashboard"
 
   dashboard_body = jsonencode({
