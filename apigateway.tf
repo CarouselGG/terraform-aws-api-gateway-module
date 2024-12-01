@@ -69,7 +69,8 @@ resource "aws_lambda_permission" "apigw_lambda_permissions" {
     for route, lambda_arn in var.routes : lambda_arn => route
   })
 
-  statement_id  = "AllowExecutionFromAPIGateway-${substr(base64sha256(each.value), 0, 32)}"
+  statement_id = "AllowExecution-${replace(replace(each.key, " ", "_"), "/", "_")}-${substr(base64sha256(each.value), 0, 8)}"
+
   action        = "lambda:InvokeFunction"
   function_name = each.key
   principal     = "apigateway.amazonaws.com"
