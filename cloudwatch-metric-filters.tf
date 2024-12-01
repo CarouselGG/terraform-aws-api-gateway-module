@@ -2,7 +2,7 @@
 resource "aws_cloudwatch_log_metric_filter" "total_requests" {
   count = var.enable_dashboards ? 1 : 0
 
-  log_group_name = "/aws/http-api/${var.api_name}"
+  log_group_name = local.log_group_name
   name           = "TotalRequests"
   pattern        = "{ $.httpMethod = * }"
 
@@ -21,7 +21,7 @@ resource "aws_cloudwatch_log_metric_filter" "total_requests" {
 resource "aws_cloudwatch_log_metric_filter" "success_2xx" {
   count = var.enable_dashboards ? 1 : 0
 
-  log_group_name = "/aws/http-api/${var.api_name}"
+  log_group_name = local.log_group_name
   name           = "2xxSuccess"
   pattern        = "{ $.statusCode >= 200 && $.statusCode < 300 }"
 
@@ -40,7 +40,7 @@ resource "aws_cloudwatch_log_metric_filter" "success_2xx" {
 resource "aws_cloudwatch_log_metric_filter" "errors_3xx" {
   count = var.enable_dashboards ? 1 : 0
 
-  log_group_name = "/aws/http-api/${var.api_name}"
+  log_group_name = local.log_group_name
   name           = "3xxErrors"
   pattern        = "{ $.statusCode >= 300 && $.statusCode < 400 }"
 
@@ -59,7 +59,7 @@ resource "aws_cloudwatch_log_metric_filter" "errors_3xx" {
 resource "aws_cloudwatch_log_metric_filter" "errors_4xx" {
   count = var.enable_dashboards ? 1 : 0
 
-  log_group_name = "/aws/http-api/${var.api_name}"
+  log_group_name = local.log_group_name
   name           = "4xxErrors"
   pattern        = "{ $.statusCode >= 400 && $.statusCode < 500 }"
 
@@ -78,7 +78,7 @@ resource "aws_cloudwatch_log_metric_filter" "errors_4xx" {
 resource "aws_cloudwatch_log_metric_filter" "errors_5xx" {
   count = var.enable_dashboards ? 1 : 0
 
-  log_group_name = "/aws/http-api/${var.api_name}"
+  log_group_name = local.log_group_name
   name           = "5xxErrors"
   pattern        = "{ $.statusCode >= 500 && $.statusCode < 600 }"
 
@@ -97,7 +97,7 @@ resource "aws_cloudwatch_log_metric_filter" "errors_5xx" {
 resource "aws_cloudwatch_log_metric_filter" "errors_other" {
   count = var.enable_dashboards ? 1 : 0
 
-  log_group_name = "/aws/http-api/${var.api_name}"
+  log_group_name = local.log_group_name
   name           = "OtherErrors"
   pattern        = "{ $.statusCode < 200 || $.statusCode >= 600 }"
 
@@ -116,7 +116,7 @@ resource "aws_cloudwatch_log_metric_filter" "errors_other" {
 resource "aws_cloudwatch_log_metric_filter" "latency_p99" {
   count = var.enable_dashboards ? 1 : 0
 
-  log_group_name = "/aws/http-api/${var.api_name}"
+  log_group_name = local.log_group_name
   name           = "LatencyP99"
   pattern        = "{ $.latency = * }"
 
