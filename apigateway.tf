@@ -1,9 +1,3 @@
-variable "api_key" {
-  description = "Optional API key to secure routes. If not provided, routes will not require an API key."
-  type        = string
-  default     = null
-}
-
 # API Gateway
 resource "aws_apigatewayv2_api" "api" {
   name          = var.api_name

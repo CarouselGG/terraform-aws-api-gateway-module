@@ -42,7 +42,7 @@ variable "api_mapping_key" {
 }
 
 variable "api_key" {
-  description = "API key for the API Gateway (No key applied if null)"
+  description = "Optional API key to secure routes. If not provided, routes will not require an API key."
   type        = string
   default     = null
 }
