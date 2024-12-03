@@ -52,6 +52,7 @@ module "api_gateway" {
 |------------------------------|--------------------------------------------------|--------|------------------|----------|
 | api_description              | Description of the API Gateway                   | string | null             | no       |
 | api_mapping_key              | Mapping key for the API Gateway custom domain    | string | ""               | no       |
+| api_key                      | Protect each route with a single API key         | string | null             | no       |
 | api_name                     | Name of the API Gateway                          | string | n/a              | yes      |
 | api_stage_description        | Description of the API Gateway stage             | string | null             | no       |
 | aws_region                   | Region for Cloudwatch Dashboard                  | string | n/a              | yes      |
@@ -65,7 +66,6 @@ module "api_gateway" {
 | routes                       | Map of route keys to Lambda integration ARNs     | map    | n/a              | yes      |
 | route_throttling_burst_limit | Burst Limit for routes                           | map    | 1000             | no       |
 | route_throttling_rate_limit  | Rate Limit for routes                            | map    | 500              | no       |
-
 
 ## Outputs
 

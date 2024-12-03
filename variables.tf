@@ -41,6 +41,12 @@ variable "api_mapping_key" {
   default     = ""
 }
 
+variable "api_key" {
+  description = "API key for the API Gateway (No key applied if null)"
+  type        = string
+  default     = null
+}
+
 variable "log_group_name" {
   description = "Name of the CloudWatch Log Group for API Gateway"
   type        = string
