@@ -86,3 +86,39 @@ variable "route_throttling_rate_limit" {
   type        = number
   default     = 500
 }
+
+# Observability Variables
+
+variable "enable_lambda_insights" {
+  description = "Enable CloudWatch Lambda Insights widgets in the dashboard. Note: You must add the Lambda Insights layer to your Lambda functions separately."
+  type        = bool
+  default     = false
+}
+
+variable "enable_alarms" {
+  description = "Enable CloudWatch alarms for API Gateway and Lambda monitoring"
+  type        = bool
+  default     = false
+}
+
+variable "alarm_sns_topic_arn" {
+  description = "SNS topic ARN for CloudWatch alarm notifications. Required if enable_alarms is true."
+  type        = string
+  default     = null
+}
+
+variable "alarm_thresholds" {
+  description = "Thresholds for CloudWatch alarms"
+  type = object({
+    error_rate_percent    = number
+    p99_latency_ms        = number
+    lambda_error_percent  = number
+    lambda_throttle_count = number
+  })
+  default = {
+    error_rate_percent    = 5
+    p99_latency_ms        = 3000
+    lambda_error_percent  = 5
+    lambda_throttle_count = 10
+  }
+}

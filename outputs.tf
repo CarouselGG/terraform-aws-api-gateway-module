@@ -43,3 +43,22 @@ output "execution_arn" {
   description = "Execution ARN of the API Gateway"
   value       = aws_apigatewayv2_api.api.execution_arn
 }
+
+# Dashboard Outputs
+
+output "dashboard_name" {
+  description = "Name of the CloudWatch dashboard (null if dashboards disabled)"
+  value       = var.enable_dashboards ? aws_cloudwatch_dashboard.api_gateway_dashboard[0].dashboard_name : null
+}
+
+output "dashboard_url" {
+  description = "URL to the CloudWatch dashboard in AWS Console (null if dashboards disabled)"
+  value       = var.enable_dashboards ? "https://${var.aws_region}.console.aws.amazon.com/cloudwatch/home?region=${var.aws_region}#dashboards:name=${aws_cloudwatch_dashboard.api_gateway_dashboard[0].dashboard_name}" : null
+}
+
+# Lambda Insights Layer ARN (for user reference)
+
+output "lambda_insights_layer_arn" {
+  description = "ARN of the CloudWatch Lambda Insights layer for this region. Add this layer to your Lambda functions to enable enhanced monitoring."
+  value       = "arn:aws:lambda:${var.aws_region}:580247275435:layer:LambdaInsightsExtension:53"
+}

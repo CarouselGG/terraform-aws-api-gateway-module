@@ -1,3 +1,7 @@
+# =============================================================================
+# Aggregate API Gateway Metric Filters
+# =============================================================================
+
 # Total Requests
 resource "aws_cloudwatch_log_metric_filter" "total_requests" {
   count = var.enable_dashboards ? 1 : 0
@@ -112,18 +116,112 @@ resource "aws_cloudwatch_log_metric_filter" "errors_other" {
   ]
 }
 
-# Latency P99
-resource "aws_cloudwatch_log_metric_filter" "latency_p99" {
+# Latency (extracts actual latency value for percentile calculations)
+resource "aws_cloudwatch_log_metric_filter" "latency" {
   count = var.enable_dashboards ? 1 : 0
 
   log_group_name = local.log_group_name
-  name           = "LatencyP99"
+  name           = "Latency"
   pattern        = "{ $.latency = * }"
 
   metric_transformation {
-    name      = "LatencyP99"
+    name      = "Latency"
     namespace = local.metric_namespace
     value     = "$.latency"
+    unit      = "Milliseconds"
+  }
+
+  depends_on = [
+    aws_cloudwatch_log_group.api_gateway_log_group,
+  ]
+}
+
+# =============================================================================
+# Per-Route Metric Filters
+# =============================================================================
+
+# Per-Route Request Count
+resource "aws_cloudwatch_log_metric_filter" "route_requests" {
+  for_each = var.enable_dashboards ? var.routes : {}
+
+  log_group_name = local.log_group_name
+  name           = "Requests-${replace(replace(each.key, " ", "-"), "/", "_")}"
+  pattern        = "{ $.routeKey = \"${each.key}\" }"
+
+  metric_transformation {
+    name      = "Requests"
+    namespace = local.metric_namespace
+    value     = "1"
+    dimensions = {
+      Route = each.key
+    }
+  }
+
+  depends_on = [
+    aws_cloudwatch_log_group.api_gateway_log_group,
+  ]
+}
+
+# Per-Route 4xx Errors
+resource "aws_cloudwatch_log_metric_filter" "route_errors_4xx" {
+  for_each = var.enable_dashboards ? var.routes : {}
+
+  log_group_name = local.log_group_name
+  name           = "4xxErrors-${replace(replace(each.key, " ", "-"), "/", "_")}"
+  pattern        = "{ $.routeKey = \"${each.key}\" && $.statusCode >= 400 && $.statusCode < 500 }"
+
+  metric_transformation {
+    name      = "4xxErrors"
+    namespace = local.metric_namespace
+    value     = "1"
+    dimensions = {
+      Route = each.key
+    }
+  }
+
+  depends_on = [
+    aws_cloudwatch_log_group.api_gateway_log_group,
+  ]
+}
+
+# Per-Route 5xx Errors
+resource "aws_cloudwatch_log_metric_filter" "route_errors_5xx" {
+  for_each = var.enable_dashboards ? var.routes : {}
+
+  log_group_name = local.log_group_name
+  name           = "5xxErrors-${replace(replace(each.key, " ", "-"), "/", "_")}"
+  pattern        = "{ $.routeKey = \"${each.key}\" && $.statusCode >= 500 && $.statusCode < 600 }"
+
+  metric_transformation {
+    name      = "5xxErrors"
+    namespace = local.metric_namespace
+    value     = "1"
+    dimensions = {
+      Route = each.key
+    }
+  }
+
+  depends_on = [
+    aws_cloudwatch_log_group.api_gateway_log_group,
+  ]
+}
+
+# Per-Route Latency
+resource "aws_cloudwatch_log_metric_filter" "route_latency" {
+  for_each = var.enable_dashboards ? var.routes : {}
+
+  log_group_name = local.log_group_name
+  name           = "Latency-${replace(replace(each.key, " ", "-"), "/", "_")}"
+  pattern        = "{ $.routeKey = \"${each.key}\" && $.latency = * }"
+
+  metric_transformation {
+    name      = "Latency"
+    namespace = local.metric_namespace
+    value     = "$.latency"
+    unit      = "Milliseconds"
+    dimensions = {
+      Route = each.key
+    }
   }
 
   depends_on = [
