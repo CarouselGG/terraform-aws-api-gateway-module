@@ -19,13 +19,17 @@ resource "aws_sns_topic" "alarms" {
 }
 
 locals {
-  # Determine the SNS topic ARN to use (created or provided)
+  # Determine if we will have an SNS topic (known at plan time - uses only input variables)
+  will_have_sns_topic = var.create_sns_topic || var.alarm_sns_topic_arn != null
+
+  # Only create alarms if enabled and we will have an SNS topic (either created or provided)
+  # This must only depend on input variables to be known at plan time for count/for_each
+  create_alarms = var.enable_alarms && local.will_have_sns_topic
+
+  # Determine the actual SNS topic ARN to use (may be unknown until apply, but that's OK for resource attributes)
   sns_topic_arn = var.create_sns_topic ? (
     length(aws_sns_topic.alarms) > 0 ? aws_sns_topic.alarms[0].arn : null
   ) : var.alarm_sns_topic_arn
-
-  # Only create alarms if enabled and we have an SNS topic (either created or provided)
-  create_alarms = var.enable_alarms && local.sns_topic_arn != null
 }
 
 # =============================================================================
