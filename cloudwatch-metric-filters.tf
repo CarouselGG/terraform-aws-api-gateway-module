@@ -153,7 +153,7 @@ resource "aws_cloudwatch_log_metric_filter" "route_requests" {
     namespace = local.metric_namespace
     value     = "1"
     dimensions = {
-      Route = each.key
+      Route = "$.routeKey"
     }
   }
 
@@ -175,7 +175,7 @@ resource "aws_cloudwatch_log_metric_filter" "route_errors_4xx" {
     namespace = local.metric_namespace
     value     = "1"
     dimensions = {
-      Route = each.key
+      Route = "$.routeKey"
     }
   }
 
@@ -197,7 +197,7 @@ resource "aws_cloudwatch_log_metric_filter" "route_errors_5xx" {
     namespace = local.metric_namespace
     value     = "1"
     dimensions = {
-      Route = each.key
+      Route = "$.routeKey"
     }
   }
 
@@ -220,7 +220,7 @@ resource "aws_cloudwatch_log_metric_filter" "route_latency" {
     value     = "$.latency"
     unit      = "Milliseconds"
     dimensions = {
-      Route = each.key
+      Route = "$.routeKey"
     }
   }
 
