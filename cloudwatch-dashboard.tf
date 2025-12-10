@@ -203,12 +203,12 @@ locals {
     width  = 12
     height = 6
     properties = {
-      metrics = flatten([
+      metrics = concat([
         for fn in local.lambda_functions : [
           ["AWS/Lambda", "Duration", "FunctionName", fn, { label = "${fn} p50", stat = "p50" }],
           ["...", { label = "${fn} p99", stat = "p99" }]
         ]
-      ])
+      ]...)
       view    = "timeSeries"
       stacked = false
       region  = var.aws_region
@@ -228,14 +228,10 @@ locals {
     width  = 12
     height = 6
     properties = {
-      metrics = flatten([
-        [
-          for fn in local.lambda_functions : ["AWS/Lambda", "Throttles", "FunctionName", fn, { label = "${fn} Throttles" }]
-        ],
-        [
-          for fn in local.lambda_functions : ["AWS/Lambda", "ConcurrentExecutions", "FunctionName", fn, { label = "${fn} Concurrent", stat = "Maximum", yAxis = "right" }]
-        ]
-      ])
+      metrics = concat(
+        [for fn in local.lambda_functions : ["AWS/Lambda", "Throttles", "FunctionName", fn, { label = "${fn} Throttles" }]],
+        [for fn in local.lambda_functions : ["AWS/Lambda", "ConcurrentExecutions", "FunctionName", fn, { label = "${fn} Concurrent", stat = "Maximum", yAxis = "right" }]]
+      )
       view    = "timeSeries"
       stacked = false
       region  = var.aws_region
