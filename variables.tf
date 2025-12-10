@@ -101,8 +101,20 @@ variable "enable_alarms" {
   default     = false
 }
 
+variable "create_sns_topic" {
+  description = "Create an SNS topic for alarm notifications. If false and enable_alarms is true, alarm_sns_topic_arn must be provided."
+  type        = bool
+  default     = false
+}
+
+variable "sns_topic_name" {
+  description = "Name for the SNS topic (only used if create_sns_topic is true). Defaults to {api_name}-alarms."
+  type        = string
+  default     = null
+}
+
 variable "alarm_sns_topic_arn" {
-  description = "SNS topic ARN for CloudWatch alarm notifications. Required if enable_alarms is true."
+  description = "Existing SNS topic ARN for CloudWatch alarm notifications. Required if enable_alarms is true and create_sns_topic is false."
   type        = string
   default     = null
 }

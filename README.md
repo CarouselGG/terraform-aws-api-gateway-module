@@ -91,7 +91,24 @@ Enable with `enable_dashboards = true`. Creates a single combined dashboard with
 
 ### CloudWatch Alarms
 
-Enable with `enable_alarms = true` and provide `alarm_sns_topic_arn`. Creates alarms for:
+Enable with `enable_alarms = true`. You have two options for the SNS topic:
+
+#### Option 1: Let the module create an SNS topic
+
+```hcl
+enable_alarms    = true
+create_sns_topic = true
+sns_topic_name   = "my-api-alarms"  # optional, defaults to {api_name}-alarms
+```
+
+#### Option 2: Use an existing SNS topic
+
+```hcl
+enable_alarms       = true
+alarm_sns_topic_arn = aws_sns_topic.my_existing_topic.arn
+```
+
+Creates alarms for:
 
 **API Gateway:**
 - 5xx error rate exceeds threshold (default: 5%)
@@ -146,7 +163,9 @@ resource "aws_lambda_function" "example" {
 | enable_dashboards | Enable CloudWatch dashboards and metric filters | bool | false | no |
 | enable_lambda_insights | Enable Lambda Insights widgets in dashboard | bool | false | no |
 | enable_alarms | Enable CloudWatch alarms for monitoring | bool | false | no |
-| alarm_sns_topic_arn | SNS topic ARN for alarm notifications | string | null | no |
+| create_sns_topic | Create an SNS topic for alarm notifications | bool | false | no |
+| sns_topic_name | Name for created SNS topic (defaults to {api_name}-alarms) | string | null | no |
+| alarm_sns_topic_arn | Existing SNS topic ARN (required if enable_alarms=true and create_sns_topic=false) | string | null | no |
 | alarm_thresholds | Thresholds for CloudWatch alarms | object | see below | no |
 
 ### Alarm Thresholds Object
@@ -176,6 +195,7 @@ alarm_thresholds = {
 | dashboard_name | Name of the CloudWatch dashboard (null if disabled) |
 | dashboard_url | URL to the CloudWatch dashboard in AWS Console (null if disabled) |
 | lambda_insights_layer_arn | ARN of the Lambda Insights layer for this region |
+| sns_topic_arn | ARN of the SNS topic for alarms (null if not created by module) |
 
 ## Requirements
 

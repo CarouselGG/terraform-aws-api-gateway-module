@@ -62,3 +62,10 @@ output "lambda_insights_layer_arn" {
   description = "ARN of the CloudWatch Lambda Insights layer for this region. Add this layer to your Lambda functions to enable enhanced monitoring."
   value       = "arn:aws:lambda:${var.aws_region}:580247275435:layer:LambdaInsightsExtension:53"
 }
+
+# SNS Topic Output
+
+output "sns_topic_arn" {
+  description = "ARN of the SNS topic for alarm notifications (null if not created by module)"
+  value       = var.create_sns_topic && length(aws_sns_topic.alarms) > 0 ? aws_sns_topic.alarms[0].arn : null
+}

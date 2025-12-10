@@ -2,9 +2,30 @@
 # CloudWatch Alarms - API Gateway and Lambda Monitoring
 # =============================================================================
 
+# =============================================================================
+# SNS Topic (Optional)
+# =============================================================================
+
+resource "aws_sns_topic" "alarms" {
+  count = var.enable_alarms && var.create_sns_topic ? 1 : 0
+
+  name = coalesce(var.sns_topic_name, "${var.api_name}-alarms")
+
+  tags = {
+    Name      = coalesce(var.sns_topic_name, "${var.api_name}-alarms")
+    ApiName   = var.api_name
+    ManagedBy = "terraform"
+  }
+}
+
 locals {
-  # Only create alarms if both enabled and SNS topic provided
-  create_alarms = var.enable_alarms && var.alarm_sns_topic_arn != null
+  # Determine the SNS topic ARN to use (created or provided)
+  sns_topic_arn = var.create_sns_topic ? (
+    length(aws_sns_topic.alarms) > 0 ? aws_sns_topic.alarms[0].arn : null
+  ) : var.alarm_sns_topic_arn
+
+  # Only create alarms if enabled and we have an SNS topic (either created or provided)
+  create_alarms = var.enable_alarms && local.sns_topic_arn != null
 }
 
 # =============================================================================
@@ -48,8 +69,8 @@ resource "aws_cloudwatch_metric_alarm" "api_5xx_error_rate" {
     }
   }
 
-  alarm_actions             = [var.alarm_sns_topic_arn]
-  ok_actions                = [var.alarm_sns_topic_arn]
+  alarm_actions             = [local.sns_topic_arn]
+  ok_actions                = [local.sns_topic_arn]
   insufficient_data_actions = []
 
   tags = {
@@ -79,8 +100,8 @@ resource "aws_cloudwatch_metric_alarm" "api_p99_latency" {
   threshold           = var.alarm_thresholds.p99_latency_ms
   treat_missing_data  = "notBreaching"
 
-  alarm_actions             = [var.alarm_sns_topic_arn]
-  ok_actions                = [var.alarm_sns_topic_arn]
+  alarm_actions             = [local.sns_topic_arn]
+  ok_actions                = [local.sns_topic_arn]
   insufficient_data_actions = []
 
   tags = {
@@ -131,8 +152,8 @@ resource "aws_cloudwatch_metric_alarm" "api_4xx_error_rate" {
     }
   }
 
-  alarm_actions             = [var.alarm_sns_topic_arn]
-  ok_actions                = [var.alarm_sns_topic_arn]
+  alarm_actions             = [local.sns_topic_arn]
+  ok_actions                = [local.sns_topic_arn]
   insufficient_data_actions = []
 
   tags = {
@@ -194,8 +215,8 @@ resource "aws_cloudwatch_metric_alarm" "lambda_error_rate" {
     }
   }
 
-  alarm_actions             = [var.alarm_sns_topic_arn]
-  ok_actions                = [var.alarm_sns_topic_arn]
+  alarm_actions             = [local.sns_topic_arn]
+  ok_actions                = [local.sns_topic_arn]
   insufficient_data_actions = []
 
   tags = {
@@ -225,8 +246,8 @@ resource "aws_cloudwatch_metric_alarm" "lambda_throttles" {
     FunctionName = each.value
   }
 
-  alarm_actions             = [var.alarm_sns_topic_arn]
-  ok_actions                = [var.alarm_sns_topic_arn]
+  alarm_actions             = [local.sns_topic_arn]
+  ok_actions                = [local.sns_topic_arn]
   insufficient_data_actions = []
 
   tags = {
@@ -257,8 +278,8 @@ resource "aws_cloudwatch_metric_alarm" "lambda_duration" {
     FunctionName = each.value
   }
 
-  alarm_actions             = [var.alarm_sns_topic_arn]
-  ok_actions                = [var.alarm_sns_topic_arn]
+  alarm_actions             = [local.sns_topic_arn]
+  ok_actions                = [local.sns_topic_arn]
   insufficient_data_actions = []
 
   tags = {
@@ -288,8 +309,8 @@ resource "aws_cloudwatch_metric_alarm" "lambda_concurrent_executions" {
     FunctionName = each.value
   }
 
-  alarm_actions             = [var.alarm_sns_topic_arn]
-  ok_actions                = [var.alarm_sns_topic_arn]
+  alarm_actions             = [local.sns_topic_arn]
+  ok_actions                = [local.sns_topic_arn]
   insufficient_data_actions = []
 
   tags = {
