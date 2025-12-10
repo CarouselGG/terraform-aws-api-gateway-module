@@ -118,7 +118,7 @@ locals {
     height = 6
     properties = {
       metrics = [
-        for route_key in local.route_keys : [local.metric_namespace, "Requests", "Route", route_key, { label = route_key }]
+        for route_key in local.route_keys : [local.metric_namespace, "RouteRequests", "Route", route_key, { label = route_key }]
       ]
       view    = "timeSeries"
       stacked = true
@@ -138,7 +138,7 @@ locals {
     height = 6
     properties = {
       metrics = [
-        for route_key in local.route_keys : [local.metric_namespace, "Latency", "Route", route_key, { label = route_key, stat = "p99" }]
+        for route_key in local.route_keys : [local.metric_namespace, "RouteLatency", "Route", route_key, { label = route_key, stat = "p99" }]
       ]
       view    = "timeSeries"
       stacked = false

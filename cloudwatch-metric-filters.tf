@@ -137,19 +137,21 @@ resource "aws_cloudwatch_log_metric_filter" "latency" {
 }
 
 # =============================================================================
-# Per-Route Metric Filters
+# Per-Route Metric Filters (using dimensions to separate by route)
 # =============================================================================
+# These filters use a single filter with dimensions instead of one filter per route,
+# which avoids hitting the CloudWatch 100 metric filters per log group limit.
 
 # Per-Route Request Count
 resource "aws_cloudwatch_log_metric_filter" "route_requests" {
-  for_each = var.enable_dashboards ? var.routes : {}
+  count = var.enable_dashboards ? 1 : 0
 
   log_group_name = local.log_group_name
-  name           = "Requests-${replace(replace(each.key, " ", "-"), "/", "_")}"
-  pattern        = "{ $.routeKey = \"${each.key}\" }"
+  name           = "RouteRequests"
+  pattern        = "{ $.routeKey = * }"
 
   metric_transformation {
-    name      = "Requests"
+    name      = "RouteRequests"
     namespace = local.metric_namespace
     value     = "1"
     dimensions = {
@@ -164,14 +166,14 @@ resource "aws_cloudwatch_log_metric_filter" "route_requests" {
 
 # Per-Route 4xx Errors
 resource "aws_cloudwatch_log_metric_filter" "route_errors_4xx" {
-  for_each = var.enable_dashboards ? var.routes : {}
+  count = var.enable_dashboards ? 1 : 0
 
   log_group_name = local.log_group_name
-  name           = "4xxErrors-${replace(replace(each.key, " ", "-"), "/", "_")}"
-  pattern        = "{ $.routeKey = \"${each.key}\" && $.statusCode >= 400 && $.statusCode < 500 }"
+  name           = "Route4xxErrors"
+  pattern        = "{ $.routeKey = * && $.statusCode >= 400 && $.statusCode < 500 }"
 
   metric_transformation {
-    name      = "4xxErrors"
+    name      = "Route4xxErrors"
     namespace = local.metric_namespace
     value     = "1"
     dimensions = {
@@ -186,14 +188,14 @@ resource "aws_cloudwatch_log_metric_filter" "route_errors_4xx" {
 
 # Per-Route 5xx Errors
 resource "aws_cloudwatch_log_metric_filter" "route_errors_5xx" {
-  for_each = var.enable_dashboards ? var.routes : {}
+  count = var.enable_dashboards ? 1 : 0
 
   log_group_name = local.log_group_name
-  name           = "5xxErrors-${replace(replace(each.key, " ", "-"), "/", "_")}"
-  pattern        = "{ $.routeKey = \"${each.key}\" && $.statusCode >= 500 && $.statusCode < 600 }"
+  name           = "Route5xxErrors"
+  pattern        = "{ $.routeKey = * && $.statusCode >= 500 && $.statusCode < 600 }"
 
   metric_transformation {
-    name      = "5xxErrors"
+    name      = "Route5xxErrors"
     namespace = local.metric_namespace
     value     = "1"
     dimensions = {
@@ -208,14 +210,14 @@ resource "aws_cloudwatch_log_metric_filter" "route_errors_5xx" {
 
 # Per-Route Latency
 resource "aws_cloudwatch_log_metric_filter" "route_latency" {
-  for_each = var.enable_dashboards ? var.routes : {}
+  count = var.enable_dashboards ? 1 : 0
 
   log_group_name = local.log_group_name
-  name           = "Latency-${replace(replace(each.key, " ", "-"), "/", "_")}"
-  pattern        = "{ $.routeKey = \"${each.key}\" && $.latency = * }"
+  name           = "RouteLatency"
+  pattern        = "{ $.routeKey = * && $.latency = * }"
 
   metric_transformation {
-    name      = "Latency"
+    name      = "RouteLatency"
     namespace = local.metric_namespace
     value     = "$.latency"
     unit      = "Milliseconds"
