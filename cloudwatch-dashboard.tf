@@ -267,7 +267,7 @@ locals {
       period  = 60
       title   = "Lambda - Memory Utilization % (Insights)"
       yAxis = {
-        left = { min = 0, max = 100, label = "Percent" }
+        left = { min = 0, max = 100 }
       }
     }
   }
@@ -290,7 +290,7 @@ locals {
       period  = 60
       title   = "Lambda - Cold Start Duration (Insights)"
       yAxis = {
-        left = { min = 0, label = "Milliseconds" }
+        left = { min = 0 }
       }
     }
   }
